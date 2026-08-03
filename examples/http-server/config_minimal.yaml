@@ -1,0 +1,4 @@
+instrumentation:
+  http:
+    port: 9000
+    api_key: "MINIMALAPIKEY123"

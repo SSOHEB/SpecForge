@@ -1,0 +1,36 @@
+instrumentation:
+  http:
+    enabled:
+      type: bool
+      default: true
+      description: "Enables HTTP instrumentation"
+      required: false
+    capture_headers:
+      type: string[]
+      description: "Headers to capture"
+    port:
+      type: int
+      default: 8080
+      min: 1
+      max: 65535
+    log_level:
+      type: string
+      enum: [debug, info, warn, error]
+      default: info
+    host:
+      type: string
+      default: "127.0.0.1"
+      description: "HTTP server bind address"
+    timeout:
+      type: int
+      default: 30
+      min: 1
+      description: "Request timeout in seconds"
+    redact_query:
+      type: string[]
+      description: "Query parameters to redact from logs"
+    api_key:
+      type: string
+      pattern: "^[A-Z0-9]{16}$"
+      description: "API key for external service integration"
+
