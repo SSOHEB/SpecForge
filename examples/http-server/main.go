@@ -1,8 +1,12 @@
 package main
 
 import (
+	"context"
+	"flag"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"configforge/internal/parser"
 	"configforge/internal/runtime"
@@ -11,6 +15,9 @@ import (
 )
 
 func main() {
+	watch := flag.Bool("watch", false, "watch config file for changes and reload")
+	flag.Parse()
+
 	configPath := os.Getenv("CONFIGFORGE_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/http-server/config.yaml"
@@ -28,6 +35,45 @@ func main() {
 		os.Exit(1)
 	}
 
+	if *watch {
+		// Start Hot Reload Watcher
+		w, err := runtime.NewWatcher[Config](ast, configPath)
+		if err != nil {
+			fmt.Printf("failed to initialize watcher: %v\n", err)
+			os.Exit(1)
+		}
+
+		w.OnReload(func(cfg *Config) {
+			fmt.Printf("config reloaded: new port = %d\n", cfg.Instrumentation.Http.Port)
+		})
+
+		w.OnError(func(err error) {
+			fmt.Printf("config reload failed: %v\n", err)
+		})
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		go func() {
+			if err := w.Start(ctx); err != nil {
+				fmt.Printf("watcher error: %v\n", err)
+			}
+		}()
+
+		fmt.Println("watching config file for changes... press Ctrl+C to stop")
+
+		// Block until SIGINT/SIGTERM
+		sigs := make(chan os.Signal, 1)
+		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+		<-sigs
+
+		fmt.Println("\nstopping watcher...")
+		_ = w.Stop()
+		fmt.Println("stopped")
+		os.Exit(0)
+	}
+
+	// One-shot behavior
 	// 2. Load config, apply defaults, and convert to typed struct in one step
 	cfg, rawConfig, err := runtime.LoadAndPrepareFile[Config](ast, configPath)
 	if err != nil {
