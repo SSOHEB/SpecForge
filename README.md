@@ -246,6 +246,3 @@ For guidelines on setting up local environments, running the testing tiers, and 
 
 ---
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
