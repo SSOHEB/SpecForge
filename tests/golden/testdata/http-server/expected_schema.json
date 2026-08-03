@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "instrumentation": {
+      "properties": {
+        "http": {
+          "properties": {
+            "api_key": {
+              "description": "API key for external service integration",
+              "pattern": "^[A-Z0-9]{16}$",
+              "type": "string"
+            },
+            "capture_headers": {
+              "description": "Headers to capture",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "enabled": {
+              "default": true,
+              "description": "Enables HTTP instrumentation",
+              "type": "boolean"
+            },
+            "host": {
+              "default": "127.0.0.1",
+              "description": "HTTP server bind address",
+              "type": "string"
+            },
+            "log_level": {
+              "default": "info",
+              "enum": [
+                "debug",
+                "info",
+                "warn",
+                "error"
+              ],
+              "type": "string"
+            },
+            "port": {
+              "default": 8080,
+              "maximum": 65535,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "redact_query": {
+              "description": "Query parameters to redact from logs",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "timeout": {
+              "default": 30,
+              "description": "Request timeout in seconds",
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "type": "object"
+}
