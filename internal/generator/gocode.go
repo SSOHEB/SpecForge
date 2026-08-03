@@ -31,6 +31,10 @@ func GenerateGoCode(ast *schema.AST, packageName string, opts ...GenOptions) ([]
 		opt = opts[0]
 	}
 
+	// fieldName resolves naming collisions when the Functional API is enabled.
+	// In Go, a struct cannot have a field and a method with the same name.
+	// Appending "Field" to the struct field name (e.g. "PortField") frees up
+	// the unsuffixed name to be used for the getter method (e.g. "Port()").
 	fieldName := func(name string) string {
 		if opt.WithFunctionalAPI {
 			return name + "Field"
