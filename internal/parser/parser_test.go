@@ -8,11 +8,11 @@ import (
 
 func TestParse(t *testing.T) {
 	tests := []struct {
-		name          string
-		yamlInput     string
-		expectErr     bool
-		errTypeCheck  func(error) bool
-		errStringSub  string
+		name         string
+		yamlInput    string
+		expectErr    bool
+		errTypeCheck func(error) bool
+		errStringSub string
 	}{
 		{
 			name: "valid nested metadata",
@@ -118,7 +118,7 @@ instrumentation:
 			errStringSub: "instrumentation.http.port: pattern is not valid for type int",
 		},
 		{
-			name: "empty file",
+			name:      "empty file",
 			yamlInput: ``,
 			expectErr: false,
 		},

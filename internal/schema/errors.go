@@ -38,4 +38,3 @@ type InvalidRegexPatternError struct {
 func (e *InvalidRegexPatternError) Error() string {
 	return fmt.Sprintf("invalid regex pattern %q at %s: %v", e.Pattern, e.Path, e.Err)
 }
-

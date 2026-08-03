@@ -1,3 +1,4 @@
+// Package cmd contains unit tests for verifying the Cobra CLI commands.
 package cmd
 
 import (

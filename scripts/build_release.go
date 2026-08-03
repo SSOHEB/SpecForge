@@ -1,3 +1,4 @@
+// Package main compiles and generates cross-platform releases for configforge.
 package main
 
 import (
@@ -12,7 +13,7 @@ import (
 	"time"
 )
 
-type Target struct {
+type target struct {
 	os   string
 	arch string
 	ext  string
@@ -25,7 +26,7 @@ func main() {
 
 	fmt.Printf("Building configforge %s (commit: %s, date: %s)...\n", version, commit, date)
 
-	targets := []Target{
+	targets := []target{
 		{"linux", "amd64", ""},
 		{"linux", "arm64", ""},
 		{"darwin", "amd64", ""},

@@ -1,61 +1,207 @@
 # configforge
 
-A semantic configuration management and generation framework for Go applications.
+`configforge` is a semantic configuration management and generation framework for Go applications.
 
 **Project Status: Feature-Complete (All 18 stages fully implemented and verified).**
 
 ---
 
+## Overview
+
+`configforge` separates configuration **specification** from configuration **data**. By defining your configuration schema, validation rules, default values, and description comments in a single YAML file (`metadata.yaml`), `configforge` compiles this specification into an AST. This AST is then used to generate type-safe Go structs, JSON schemas for IDE autocomplete, and Markdown documentation, while also providing a runtime loader with default values, environment overrides, and file-watching hot reloads.
+
+---
+
+## Why configforge?
+
+In traditional Go application architectures, configuration management often falls into two patterns:
+1. **Plain Struct Unmarshaling:** Minimal validation, boilerplate code, zero defaults handling, and silent failures when required fields are missing.
+2. **Dynamic Maps/Loose Types (Viper):** Prone to typos, lacks compile-time type-safety, and bypasses Go's type compiler.
+
+`configforge` is inspired by the **OpenTelemetry Configuration Specification** philosophy. It allows developers to:
+* Declare all configuration rules in a metadata file.
+* Compile and validate the metadata structure at build-time.
+* Compile strongly typed Go config structures and functional APIs.
+* Enforce semantic validation checks (required fields, value ranges, enums, regex patterns) at application startup and reload, cleanly decoupled from runtime serialization formats.
+
+---
+
 ## Installation
 
-### From Binary Releases
-Download the pre-compiled binary for your platform from the GitHub Releases page.
+### 1. Pre-built Binaries
+Download the compiled release binary for your OS and architecture from the GitHub Releases page.
 
-### From Source
+### 2. From Source
 ```bash
 go install github.com/SSOHEB/configforge/cmd/configforge@latest
 ```
 
-### Via Docker
-Run the command directly inside the container:
+### 3. Via Docker
+Run `configforge` inside a container (sharing the working directory):
 ```bash
 docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/configforge:latest defaults -m metadata.yaml
 ```
 
 ---
 
-## CLI Usage
+## Quick Start
+
+Get up and running in under 2 minutes:
+
+### 1. Declare the Specification (`metadata.yaml`)
+Create a namespace `server` with nested fields and value constraints:
+
+```yaml
+server:
+  host:
+    type: string
+    default: "localhost"
+  port:
+    type: int
+    default: 8080
+    min: 1
+    max: 65535
+    description: "Port to listen on"
+  api_key:
+    type: string
+    pattern: "^[A-Z0-9]{16}$"
+    required: true
+```
+
+### 2. Generate Structs & JSON Schema
+Compile the metadata specification into typed Go structures with a Functional Getter API:
+
+```bash
+configforge generate --metadata metadata.yaml --out ./config --functional-api
+```
+
+This generates `config/generated_config.go` containing:
+```go
+type ServerConfig struct {
+    HostField string `yaml:"host"`
+    PortField int    `yaml:"port"`
+}
+
+func (s *ServerConfig) Host() string { return s.HostField }
+func (s *ServerConfig) Port() int    { return s.PortField }
+```
+
+### 3. Provide Configuration (`config.yaml`)
+Create a local configuration file containing overrides:
+
+```yaml
+server:
+  port: 9000
+  api_key: "MYSECRETAPIKEY12"
+```
+
+### 4. Load, Validate, and Access in Go
+Load the configuration, automatically injecting default values (like `host: "localhost"`) and checking validation constraints:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"configforge/internal/runtime"
+	"configforge/internal/schema"
+	"configforge/internal/parser"
+)
+
+func main() {
+	// Parse metadata spec to build the AST schema
+	rawMeta, _ := parser.ParseFile("metadata.yaml")
+	ast, _ := schema.Build(rawMeta)
+
+	// Load configuration, apply defaults, env overrides, and validate
+	cfg, _, err := runtime.LoadAndPrepareFile[Config](ast, "config.yaml")
+	if err != nil {
+		log.Fatalf("Invalid configuration: %v", err)
+	}
+
+	// Access configuration values using the safe Functional API
+	fmt.Printf("Starting server on %s:%d...\n", cfg.Server().Host(), cfg.Server().Port())
+}
+```
+
+---
+
+## CLI Reference
 
 Every command supports `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-o`) flags.
 
-### 1. defaults
-Prints a list of all fields, their Go types, and default values or requirements:
+### `defaults`
+Prints a formatted table listing all defined configuration paths, Go types, and default values or required flags:
 ```bash
-configforge defaults --metadata examples/http-server/metadata.yaml
+configforge defaults --metadata metadata.yaml
 ```
 
-### 2. validate
-Validates configuration files against semantic rules (e.g. min, max, enum, regex pattern):
+### `validate`
+Validates application configuration files against semantic constraints (ranges, enums, regexes, required keys):
 ```bash
-configforge validate --metadata examples/http-server/metadata.yaml --config examples/http-server/config.yaml
+configforge validate --metadata metadata.yaml --config config.yaml
 ```
 
-### 3. generate
-Generates draft-07 JSON Schema (`schema.json`) and typed Go config structures (`generated_config.go`):
+### `generate`
+Compiles both the Draft-07 JSON Schema (`schema.json`) and the typed Go structs (`generated_config.go`):
 ```bash
-configforge generate --metadata examples/http-server/metadata.yaml --out examples/http-server --functional-api
+configforge generate --metadata metadata.yaml --out ./generated --functional-api
 ```
 
-### 4. schema
-Generates JSON Schema. Prints to standard output, or writes to `--out` if `-w`/`--write` is provided:
+### `schema`
+Generates and prints the JSON Schema document. Use `-w` to write to file:
 ```bash
-configforge schema --metadata examples/http-server/metadata.yaml
+configforge schema --metadata metadata.yaml
 ```
 
-### 5. docs
-Generates reference Markdown documentation from a metadata specification:
+### `docs`
+Generates structured Reference Markdown documentation:
 ```bash
-configforge docs --metadata examples/http-server/metadata.yaml --out examples/http-server
+configforge docs --metadata metadata.yaml --out ./docs
+```
+
+### `version`
+Displays version details, Git commit hash, and build timestamp:
+```bash
+configforge version
+```
+
+---
+
+## Architecture
+
+`configforge` operates as a compiler pipeline separating frontend parsing from backend code generation and runtime layers:
+
+```
+                  +-----------------------+
+                  |  spec/metadata.yaml   |
+                  +-----------------------+
+                              |
+                              v
+                  +-----------------------+
+                  |    internal/parser    | (YAML parsing)
+                  +-----------------------+
+                              |
+                              v
+                  +-----------------------+
+                  |    internal/schema    | (AST Compilation & Checks)
+                  +-----------------------+
+                              |
+         +--------------------+--------------------+
+         |                                         |
+         v                                         v
++------------------+                      +------------------+
+|internal/generator| (Go/JSON/Markdown)   |internal/validator| (Semantic checks)
++------------------+                      +------------------+
+         |                                         |
+         +--------------------+--------------------+
+                              |
+                              v
+                  +-----------------------+
+                  |   internal/runtime    | (YAML Loader, Watcher, Envs)
+                  +-----------------------+
 ```
 
 ---
@@ -64,66 +210,42 @@ configforge docs --metadata examples/http-server/metadata.yaml --out examples/ht
 
 configforge features a testing pyramid containing unit tests, golden tests, black-box integration tests, and benchmarks.
 
-### 1. Unit Tests (Fast)
-Verifies individual components (parser, AST builder, generators, validator, defaults engine, watcher) in isolation:
+### 1. Unit Tests
+Verifies internal business rules of individual packages:
 ```bash
 make test
 ```
 
 ### 2. Golden Tests
-Ensures output generators (JSON Schema, Go structures, Markdown docs) do not drift from canonical expected outputs.
+Prevents generator output drift against pre-recorded expected outputs:
 ```bash
 make test-golden
 ```
-To deliberately regenerate golden files when generator logic is updated:
+To intentionally regenerate golden files:
 ```bash
 go test ./tests/golden/... -update
 ```
 
 ### 3. Integration Tests
-Drives the CLI as a black box using `go run` to test end-to-end generating and validating on valid and invalid configuration templates:
+Verifies CLI command executions and error statuses as a black box:
 ```bash
 make test-integration
 ```
 
 ### 4. Benchmarks
-Benchmarks configuration loading and AST compiling to measure performance and track memory allocations:
+Measures execution performance and memory footprint:
 ```bash
 make bench
 ```
 
 ---
 
-## Building from Source & Platform Execution Quirks
+## Contributing
 
-To compile the `configforge` CLI tool from source:
-```bash
-go build -o bin/configforge ./cmd/configforge
-```
-
-> [!NOTE]
-> On some Windows machines, local Application Control policies or Windows Defender heuristics might block the execution of freshly compiled application binaries that implement folder-watching (`fsnotify`) or connection retry loops (such as the E2E example servers). If you run into execution blocks when executing compiled example binaries locally, use `go run` or execute them in isolated container environments (Docker/WSL2) for validation. The `configforge` CLI binary itself performs standard file parsing and generation and executes normally on Windows.
+For guidelines on setting up local environments, running the testing tiers, and code conventions, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## Project Status
+## License
 
-`configforge` has evolved from initial scaffolding to a comprehensive, enterprise-ready configuration management framework:
-1. Normalized metadata spec parser (YAML).
-2. Dynamic Abstract Syntax Tree (AST) compiler with validator flags.
-3. Deterministic JSON Schema Generator.
-4. Go struct generator with Custom Marshal/Unmarshal tags.
-5. Functional Getter API generator.
-6. Build-time schema generator command.
-7. Declarative defaults CLI table command.
-8. CLI command for validating files against schemas.
-9. Runtime loader with automatic default injection.
-10. Runtime environment variable overrides.
-11. Real-time config watcher with debounced hot-reload and atomic swaps.
-12. Comprehensive CLI runner (`cobra`).
-13. Automatic reference Markdown documentation generator.
-14. Unit, golden, and integration test pyramids.
-15. Dynamic benchmarking suite.
-16. Cross-platform compilation and release registry.
-17. Docker multi-stage container packaging.
-18. Automating release pipeline (GitHub Actions).
+This project is licensed under the MIT License. See the LICENSE file for details.

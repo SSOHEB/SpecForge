@@ -157,7 +157,6 @@ instrumentation:
 		t.Errorf("expected error string to mention enum, got: %s", errLogLevel.Error())
 	}
 
-
 	// 5. Empty AST produces minimal valid empty schema
 	emptySchemaBytes, err := GenerateJSONSchema(nil)
 	if err != nil {

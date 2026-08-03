@@ -63,7 +63,7 @@ instrumentation:
 `,
 			expectErrors: true,
 			expectedLen:  1,
-			errChecks: []func(ValidationError) bool {
+			errChecks: []func(ValidationError) bool{
 				func(ve ValidationError) bool {
 					return ve.Path == "instrumentation.http.port" && ve.Rule == "max"
 				},
@@ -78,7 +78,7 @@ instrumentation:
 `,
 			expectErrors: true,
 			expectedLen:  1,
-			errChecks: []func(ValidationError) bool {
+			errChecks: []func(ValidationError) bool{
 				func(ve ValidationError) bool {
 					return ve.Path == "instrumentation.http.log_level" && ve.Rule == "enum"
 				},
@@ -93,7 +93,7 @@ instrumentation:
 `,
 			expectErrors: true,
 			expectedLen:  1,
-			errChecks: []func(ValidationError) bool {
+			errChecks: []func(ValidationError) bool{
 				func(ve ValidationError) bool {
 					return ve.Path == "instrumentation.http.api_key" && ve.Rule == "pattern"
 				},
@@ -110,7 +110,7 @@ instrumentation:
 `,
 			expectErrors: true,
 			expectedLen:  3,
-			errChecks: []func(ValidationError) bool {
+			errChecks: []func(ValidationError) bool{
 				func(ve ValidationError) bool {
 					return ve.Path == "instrumentation.http.api_key" && ve.Rule == "pattern"
 				},

@@ -304,4 +304,3 @@ func TestGoCodeGeneration_FunctionalAPI(t *testing.T) {
 		t.Errorf("missing Http.Port() method definition")
 	}
 }
-

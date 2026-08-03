@@ -73,7 +73,7 @@ func ExecuteWithArgs(args []string) (string, error) {
 	metadataPath = ""
 	configPath = ""
 	outputPath = ""
-	
+
 	// Reset subcommand flags
 	writeSchema = false
 	functionalAPI = false

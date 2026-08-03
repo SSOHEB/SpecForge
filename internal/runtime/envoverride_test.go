@@ -230,4 +230,3 @@ func TestE2ESmoke(t *testing.T) {
 	t.Logf("HTTP Server Enabled: %v (default)", cfg.Instrumentation.Http.Enabled)
 	t.Logf("HTTP Server ApiKey: %s (configured)", cfg.Instrumentation.Http.ApiKey)
 }
-

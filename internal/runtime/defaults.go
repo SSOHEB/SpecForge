@@ -130,7 +130,6 @@ func copySlice(src []any) []any {
 	return dst
 }
 
-
 // LoadAndPrepare loads raw config from default CONFIGFORGE_CONFIG_PATH, applies defaults, and unmarshals.
 func LoadAndPrepare[T any](ast *schema.AST) (*T, map[string]any, error) {
 	path := os.Getenv("CONFIGFORGE_CONFIG_PATH")

@@ -4,15 +4,23 @@ package schema
 type FieldType int
 
 const (
+	// TypeBool represents a boolean field.
 	TypeBool FieldType = iota
+	// TypeString represents a string field.
 	TypeString
+	// TypeInt represents an integer field.
 	TypeInt
+	// TypeFloat represents a floating-point number field.
 	TypeFloat
+	// TypeStringSlice represents an array of strings.
 	TypeStringSlice
+	// TypeIntSlice represents an array of integers.
 	TypeIntSlice
+	// TypeStringMap represents a map of string keys to string values.
 	TypeStringMap
 )
 
+// String returns the string representation of the FieldType.
 func (t FieldType) String() string {
 	switch t {
 	case TypeBool:

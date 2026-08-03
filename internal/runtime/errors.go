@@ -42,4 +42,3 @@ func (e *EnvParseError) Error() string {
 	}
 	return fmt.Sprintf("failed to parse environment variable %s=%q as %s", e.EnvVar, e.Value, e.ExpectedType)
 }
-
