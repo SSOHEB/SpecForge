@@ -74,3 +74,14 @@ Benchmarks configuration loading and AST compiling to measure performance and tr
 ```bash
 make bench
 ```
+
+## Building from Source & Platform Execution Quirks
+
+To compile the `configforge` CLI tool from source:
+```bash
+go build -o bin/configforge ./cmd/configforge
+```
+
+> [!NOTE]
+> On some Windows machines, local Application Control policies or Windows Defender heuristics might block the execution of freshly compiled application binaries that implement folder-watching (`fsnotify`) or connection retry loops (such as the E2E example servers). If you run into execution blocks when executing compiled example binaries locally, use `go run` or execute them in isolated container environments (Docker/WSL2) for validation. The `configforge` CLI binary itself performs standard file parsing and generation and executes normally on Windows.
+
