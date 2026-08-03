@@ -4,26 +4,66 @@ package main
 
 // Config is the root configuration struct.
 type Config struct {
-	Instrumentation InstrumentationConfig `yaml:"instrumentation"`
+	InstrumentationField InstrumentationConfig `yaml:"instrumentation"`
 }
 
 type Http struct {
 	// API key for external service integration
-	ApiKey string `yaml:"api_key"`
+	ApiKeyField string `yaml:"api_key"`
 	// Headers to capture
-	CaptureHeaders []string `yaml:"capture_headers"`
+	CaptureHeadersField []string `yaml:"capture_headers"`
 	// Enables HTTP instrumentation
-	Enabled bool `yaml:"enabled"`
+	EnabledField bool `yaml:"enabled"`
 	// HTTP server bind address
-	Host     string `yaml:"host"`
-	LogLevel string `yaml:"log_level"`
-	Port     int    `yaml:"port"`
+	HostField     string `yaml:"host"`
+	LogLevelField string `yaml:"log_level"`
+	PortField     int    `yaml:"port"`
 	// Query parameters to redact from logs
-	RedactQuery []string `yaml:"redact_query"`
+	RedactQueryField []string `yaml:"redact_query"`
 	// Request timeout in seconds
-	Timeout int `yaml:"timeout"`
+	TimeoutField int `yaml:"timeout"`
 }
 
 type InstrumentationConfig struct {
-	Http Http `yaml:"http"`
+	HttpField Http `yaml:"http"`
+}
+
+func (c *Config) Instrumentation() *InstrumentationConfig {
+	return &c.InstrumentationField
+}
+
+func (n *Http) ApiKey() string {
+	return n.ApiKeyField
+}
+
+func (n *Http) CaptureHeaders() []string {
+	return n.CaptureHeadersField
+}
+
+func (n *Http) Enabled() bool {
+	return n.EnabledField
+}
+
+func (n *Http) Host() string {
+	return n.HostField
+}
+
+func (n *Http) LogLevel() string {
+	return n.LogLevelField
+}
+
+func (n *Http) Port() int {
+	return n.PortField
+}
+
+func (n *Http) RedactQuery() []string {
+	return n.RedactQueryField
+}
+
+func (n *Http) Timeout() int {
+	return n.TimeoutField
+}
+
+func (n *InstrumentationConfig) Http() *Http {
+	return &n.HttpField
 }

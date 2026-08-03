@@ -9,7 +9,7 @@ import (
 
 	yamlparser "configforge/internal/parser"
 	"configforge/internal/schema"
-
+	"go/ast"
 )
 
 func TestGoCodeGeneration(t *testing.T) {
@@ -168,3 +168,140 @@ func assertContains(t *testing.T, s, sub string) {
 		t.Errorf("expected generated code to contain %q, but it did not.\nFull code:\n%s", sub, s)
 	}
 }
+
+func TestGoCodeGeneration_FunctionalAPI(t *testing.T) {
+	raw, err := yamlparser.ParseFile("../../examples/http-server/metadata.yaml")
+	if err != nil {
+		t.Fatalf("failed to parse metadata: %v", err)
+	}
+	astStruct, err := schema.Build(raw)
+	if err != nil {
+		t.Fatalf("failed to build AST: %v", err)
+	}
+
+	// 1. Verify WithFunctionalAPI: false produces output identical to default
+	codeDefault, err := GenerateGoCode(astStruct, "config")
+	if err != nil {
+		t.Fatalf("failed to generate default: %v", err)
+	}
+	codeFalse, err := GenerateGoCode(astStruct, "config", GenOptions{WithFunctionalAPI: false})
+	if err != nil {
+		t.Fatalf("failed to generate WithFunctionalAPI: false: %v", err)
+	}
+	if !bytes.Equal(codeDefault, codeFalse) {
+		t.Errorf("default generation differs from WithFunctionalAPI: false")
+	}
+
+	// 2. Generate with WithFunctionalAPI: true
+	codeTrue, err := GenerateGoCode(astStruct, "config", GenOptions{WithFunctionalAPI: true})
+	if err != nil {
+		t.Fatalf("failed to generate WithFunctionalAPI: true: %v", err)
+	}
+
+	// Verify using go/parser.ParseFile
+	fset := token.NewFileSet()
+	parsedFile, err := parser.ParseFile(fset, "generated_config.go", codeTrue, parser.ParseComments)
+	if err != nil {
+		t.Fatalf("generated functional Go code failed parsing check: %v\nCode:\n%s", err, string(codeTrue))
+	}
+
+	var foundConfigStruct, foundHttpStruct bool
+	var foundConfigInstrumentationMethod, foundHttpPortMethod bool
+
+	for _, decl := range parsedFile.Decls {
+		switch d := decl.(type) {
+		case *ast.GenDecl:
+			for _, spec := range d.Specs {
+				typeSpec, ok := spec.(*ast.TypeSpec)
+				if !ok {
+					continue
+				}
+				structType, ok := typeSpec.Type.(*ast.StructType)
+				if !ok {
+					continue
+				}
+
+				if typeSpec.Name.Name == "Config" {
+					foundConfigStruct = true
+					var foundField bool
+					for _, field := range structType.Fields.List {
+						for _, name := range field.Names {
+							if name.Name == "InstrumentationField" {
+								foundField = true
+							}
+						}
+					}
+					if !foundField {
+						t.Errorf("Config struct missing InstrumentationField")
+					}
+				}
+
+				if typeSpec.Name.Name == "Http" {
+					foundHttpStruct = true
+					var foundField bool
+					for _, field := range structType.Fields.List {
+						for _, name := range field.Names {
+							if name.Name == "PortField" {
+								foundField = true
+							}
+						}
+					}
+					if !foundField {
+						t.Errorf("Http struct missing PortField")
+					}
+				}
+			}
+
+		case *ast.FuncDecl:
+			if d.Recv != nil && len(d.Recv.List) > 0 {
+				recvType := d.Recv.List[0].Type
+				var recvName string
+				if star, ok := recvType.(*ast.StarExpr); ok {
+					if ident, ok := star.X.(*ast.Ident); ok {
+						recvName = ident.Name
+					}
+				} else if ident, ok := recvType.(*ast.Ident); ok {
+					recvName = ident.Name
+				}
+
+				if recvName == "Config" && d.Name.Name == "Instrumentation" {
+					foundConfigInstrumentationMethod = true
+					if star, ok := d.Type.Results.List[0].Type.(*ast.StarExpr); ok {
+						if ident, ok := star.X.(*ast.Ident); ok {
+							if ident.Name != "InstrumentationConfig" {
+								t.Errorf("expected Config.Instrumentation to return *InstrumentationConfig, got *%s", ident.Name)
+							}
+						}
+					} else {
+						t.Errorf("expected Config.Instrumentation to return a pointer type")
+					}
+				}
+
+				if recvName == "Http" && d.Name.Name == "Port" {
+					foundHttpPortMethod = true
+					if ident, ok := d.Type.Results.List[0].Type.(*ast.Ident); ok {
+						if ident.Name != "int" {
+							t.Errorf("expected Http.Port to return int, got %s", ident.Name)
+						}
+					} else {
+						t.Errorf("expected Http.Port to return basic identifier type")
+					}
+				}
+			}
+		}
+	}
+
+	if !foundConfigStruct {
+		t.Errorf("missing Config struct definition")
+	}
+	if !foundHttpStruct {
+		t.Errorf("missing Http struct definition")
+	}
+	if !foundConfigInstrumentationMethod {
+		t.Errorf("missing Config.Instrumentation() method definition")
+	}
+	if !foundHttpPortMethod {
+		t.Errorf("missing Http.Port() method definition")
+	}
+}
+

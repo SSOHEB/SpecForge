@@ -44,7 +44,9 @@ func main() {
 		}
 
 		w.OnReload(func(cfg *Config) {
-			fmt.Printf("config reloaded: new port = %d\n", cfg.Instrumentation.Http.Port)
+			fmt.Printf("config reloaded: new port (method) = %d, new port (field) = %d\n",
+				cfg.Instrumentation().Http().Port(),
+				cfg.InstrumentationField.HttpField.PortField)
 		})
 
 		w.OnError(func(err error) {
@@ -92,10 +94,19 @@ func main() {
 	}
 
 	fmt.Println("config valid")
-	fmt.Printf("HTTP Server Port: %d (configured)\n", cfg.Instrumentation.Http.Port)
-	fmt.Printf("HTTP Server Host: %s (default)\n", cfg.Instrumentation.Http.Host)
-	fmt.Printf("HTTP Server Enabled: %v (default)\n", cfg.Instrumentation.Http.Enabled)
-	fmt.Printf("HTTP Server Timeout: %d (default)\n", cfg.Instrumentation.Http.Timeout)
-	fmt.Printf("HTTP Server LogLevel: %s (default)\n", cfg.Instrumentation.Http.LogLevel)
-	fmt.Printf("HTTP Server ApiKey: %s (configured)\n", cfg.Instrumentation.Http.ApiKey)
+	fmt.Println("Method Access:")
+	fmt.Printf("  Port: %d\n", cfg.Instrumentation().Http().Port())
+	fmt.Printf("  Host: %s\n", cfg.Instrumentation().Http().Host())
+	fmt.Printf("  Enabled: %v\n", cfg.Instrumentation().Http().Enabled())
+	fmt.Printf("  Timeout: %d\n", cfg.Instrumentation().Http().Timeout())
+	fmt.Printf("  LogLevel: %s\n", cfg.Instrumentation().Http().LogLevel())
+	fmt.Printf("  ApiKey: %s\n", cfg.Instrumentation().Http().ApiKey())
+
+	fmt.Println("Field Access:")
+	fmt.Printf("  Port: %d\n", cfg.InstrumentationField.HttpField.PortField)
+	fmt.Printf("  Host: %s\n", cfg.InstrumentationField.HttpField.HostField)
+	fmt.Printf("  Enabled: %v\n", cfg.InstrumentationField.HttpField.EnabledField)
+	fmt.Printf("  Timeout: %d\n", cfg.InstrumentationField.HttpField.TimeoutField)
+	fmt.Printf("  LogLevel: %s\n", cfg.InstrumentationField.HttpField.LogLevelField)
+	fmt.Printf("  ApiKey: %s\n", cfg.InstrumentationField.HttpField.ApiKeyField)
 }
