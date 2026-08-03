@@ -1,0 +1,12 @@
+redis:
+  host: "localhost"
+  port: 6379
+  db: 0
+  pool_size: 15
+  dial_timeout: 2
+  read_timeout: 2
+  write_timeout: 2
+  tls_enabled: false
+  sentinel_addrs:
+    - "192.168.1.100:26379"
+    - "192.168.1.101:26379"

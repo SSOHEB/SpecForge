@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "postgres": {
+      "properties": {
+        "conn_max_lifetime": {
+          "default": 300,
+          "description": "Maximum duration in seconds a connection survives",
+          "type": "integer"
+        },
+        "database": {
+          "description": "Target database name",
+          "type": "string"
+        },
+        "host": {
+          "default": "localhost",
+          "description": "Postgres server hostname or IP address",
+          "type": "string"
+        },
+        "max_idle_conns": {
+          "default": 5,
+          "description": "Maximum idle database connections in pool",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "max_open_conns": {
+          "default": 25,
+          "description": "Maximum open database connections",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "password": {
+          "description": "Database authentication password",
+          "type": "string"
+        },
+        "port": {
+          "default": 5432,
+          "description": "Postgres server port number",
+          "maximum": 65535,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "retry_attempts": {
+          "default": 3,
+          "description": "Number of reconnection retry attempts",
+          "maximum": 10,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "retry_backoff_ms": {
+          "default": 500,
+          "description": "Delay in milliseconds between retry attempts",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "ssl_mode": {
+          "default": "disable",
+          "description": "SSL connection security mode",
+          "enum": [
+            "disable",
+            "require",
+            "verify-ca",
+            "verify-full"
+          ],
+          "type": "string"
+        },
+        "user": {
+          "description": "Database user name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "database",
+        "password",
+        "user"
+      ],
+      "type": "object"
+    }
+  },
+  "type": "object"
+}

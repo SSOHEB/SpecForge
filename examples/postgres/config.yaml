@@ -1,0 +1,12 @@
+postgres:
+  host: "localhost"
+  port: 5432
+  database: "users_db"
+  user: "postgres"
+  password: "supersecretpassword123"
+  ssl_mode: "disable"
+  max_open_conns: 50
+  max_idle_conns: 10
+  conn_max_lifetime: 600
+  retry_attempts: 3
+  retry_backoff_ms: 300

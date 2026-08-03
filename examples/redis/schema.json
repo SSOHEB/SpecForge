@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "redis": {
+      "properties": {
+        "db": {
+          "default": 0,
+          "description": "Redis logical database index",
+          "maximum": 15,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "dial_timeout": {
+          "default": 5,
+          "description": "Connection establishment timeout in seconds",
+          "type": "integer"
+        },
+        "host": {
+          "default": "localhost",
+          "description": "Redis server host name or IP address",
+          "type": "string"
+        },
+        "password": {
+          "description": "Optional password for authentication",
+          "type": "string"
+        },
+        "pool_size": {
+          "default": 10,
+          "description": "Maximum number of socket connections in pool",
+          "maximum": 1000,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "port": {
+          "default": 6379,
+          "description": "Redis server port number",
+          "maximum": 65535,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "read_timeout": {
+          "default": 3,
+          "description": "Socket read timeout in seconds",
+          "type": "integer"
+        },
+        "sentinel_addrs": {
+          "description": "List of Redis Sentinel addresses for HA configurations",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tls_enabled": {
+          "default": false,
+          "description": "Enables secure TLS connection",
+          "type": "boolean"
+        },
+        "write_timeout": {
+          "default": 3,
+          "description": "Socket write timeout in seconds",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "type": "object"
+}

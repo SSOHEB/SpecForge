@@ -1,0 +1,53 @@
+postgres:
+  host:
+    type: string
+    default: "localhost"
+    description: "Postgres server hostname or IP address"
+  port:
+    type: int
+    default: 5432
+    min: 1
+    max: 65535
+    description: "Postgres server port number"
+  database:
+    type: string
+    required: true
+    description: "Target database name"
+  user:
+    type: string
+    required: true
+    description: "Database user name"
+  password:
+    type: string
+    required: true
+    description: "Database authentication password"
+  ssl_mode:
+    type: string
+    enum: [disable, require, verify-ca, verify-full]
+    default: "disable"
+    description: "SSL connection security mode"
+  max_open_conns:
+    type: int
+    default: 25
+    min: 1
+    description: "Maximum open database connections"
+  max_idle_conns:
+    type: int
+    default: 5
+    min: 1
+    description: "Maximum idle database connections in pool"
+  conn_max_lifetime:
+    type: int
+    default: 300
+    description: "Maximum duration in seconds a connection survives"
+  retry_attempts:
+    type: int
+    default: 3
+    min: 0
+    max: 10
+    description: "Number of reconnection retry attempts"
+  retry_backoff_ms:
+    type: int
+    default: 500
+    min: 0
+    description: "Delay in milliseconds between retry attempts"
