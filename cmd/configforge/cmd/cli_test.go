@@ -134,13 +134,25 @@ func TestCli_Defaults(t *testing.T) {
 	}
 }
 
-func TestCli_Docs(t *testing.T) {
-	_, err := executeCommand("docs")
-	if err == nil {
-		t.Fatal("expected docs error, got nil")
+func TestCli_Docs_Success(t *testing.T) {
+	dir := t.TempDir()
+	output, err := executeCommand("docs", "-m", "../../../examples/http-server/metadata.yaml", "-o", dir)
+	if err != nil {
+		t.Fatalf("expected docs success, got: %v, output: %s", err, output)
 	}
-	var uErr *CliUserError
-	if !errors.As(err, &uErr) || !strings.Contains(uErr.Msg, "docs command is not yet implemented") {
-		t.Errorf("expected docs stub error, got: %v", err)
+
+	docPath := filepath.Join(dir, "CONFIGURATION.md")
+	if _, err := os.Stat(docPath); os.IsNotExist(err) {
+		t.Errorf("expected CONFIGURATION.md to be created")
+	}
+}
+
+func TestCli_Version(t *testing.T) {
+	output, err := executeCommand("version")
+	if err != nil {
+		t.Fatalf("expected version success, got: %v", err)
+	}
+	if !strings.Contains(output, "configforge version:") {
+		t.Errorf("expected version output, got: %s", output)
 	}
 }

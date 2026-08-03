@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -58,4 +59,26 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&metadataPath, "metadata", "m", "./metadata.yaml", "Path to metadata specification YAML file")
 	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "./config.yaml", "Path to application configuration YAML file")
 	rootCmd.PersistentFlags().StringVarP(&outputPath, "out", "o", "./generated", "Output directory for generated files")
+}
+
+// ExecuteWithArgs runs the CLI command in-process. This is extremely useful
+// for executing black-box integration tests on restricted OS platforms.
+func ExecuteWithArgs(args []string) (string, error) {
+	buf := new(bytes.Buffer)
+	rootCmd.SetOut(buf)
+	rootCmd.SetErr(buf)
+	rootCmd.SetArgs(args)
+
+	// Reset persistent flags to avoid state leakage
+	metadataPath = ""
+	configPath = ""
+	outputPath = ""
+	
+	// Reset subcommand flags
+	writeSchema = false
+	functionalAPI = false
+	stdoutDocs = false
+
+	err := rootCmd.Execute()
+	return buf.String(), err
 }

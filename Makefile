@@ -1,4 +1,4 @@
-.PHONY: build test test-golden test-integration bench generate lint clean fmt
+.PHONY: build test test-golden test-integration bench release-build docker-build docker-run generate lint clean fmt
 
 build:
 	go build -o bin/configforge ./cmd/configforge
@@ -14,6 +14,15 @@ test-integration:
 
 bench:
 	go test ./tests/integration/... -bench=. -benchmem -run=^$
+
+release-build:
+	go run scripts/build_release.go
+
+docker-build:
+	docker build -t configforge:latest .
+
+docker-run:
+	docker run --rm configforge:latest defaults -m examples/http-server/metadata.yaml
 
 generate:
 	go generate ./...

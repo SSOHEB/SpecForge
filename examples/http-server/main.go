@@ -21,10 +21,18 @@ func main() {
 	configPath := os.Getenv("CONFIGFORGE_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/http-server/config.yaml"
+		if _, err := os.Stat("config.yaml"); err == nil {
+			configPath = "config.yaml"
+		}
+	}
+
+	metadataFile := "examples/http-server/metadata.yaml"
+	if _, err := os.Stat("metadata.yaml"); err == nil {
+		metadataFile = "metadata.yaml"
 	}
 
 	// 1. Load metadata and build AST for semantic rules definition
-	rawMeta, err := parser.ParseFile("examples/http-server/metadata.yaml")
+	rawMeta, err := parser.ParseFile(metadataFile)
 	if err != nil {
 		fmt.Printf("failed to parse metadata: %v\n", err)
 		os.Exit(1)

@@ -16,10 +16,18 @@ func main() {
 	configPath := os.Getenv("CONFIGFORGE_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/redis/config.yaml"
+		if _, err := os.Stat("config.yaml"); err == nil {
+			configPath = "config.yaml"
+		}
+	}
+
+	metadataFile := "examples/redis/metadata.yaml"
+	if _, err := os.Stat("metadata.yaml"); err == nil {
+		metadataFile = "metadata.yaml"
 	}
 
 	// 1. Load metadata and build AST
-	rawMeta, err := parser.ParseFile("examples/redis/metadata.yaml")
+	rawMeta, err := parser.ParseFile(metadataFile)
 	if err != nil {
 		fmt.Printf("failed to parse metadata: %v\n", err)
 		os.Exit(1)

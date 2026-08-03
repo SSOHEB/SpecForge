@@ -6,14 +6,26 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"configforge/cmd/configforge/cmd"
 )
 
 func runCli(args ...string) (string, error) {
-	// Execute the CLI via 'go run' pointing to cmd/configforge
+	// 1. Try to shell out to "go run"
 	cmdArgs := append([]string{"run", "../../cmd/configforge"}, args...)
-	cmd := exec.Command("go", cmdArgs...)
-	outBytes, err := cmd.CombinedOutput()
-	return string(outBytes), err
+	execCmd := exec.Command("go", cmdArgs...)
+	outBytes, err := execCmd.CombinedOutput()
+	if err == nil {
+		return string(outBytes), nil
+	}
+
+	// 2. If blocked by Windows Defender Application Control policy, fall back to in-process execution.
+	outStr := string(outBytes)
+	if strings.Contains(outStr, "Application Control") || strings.Contains(err.Error(), "Access is denied") || strings.Contains(outStr, "blocked") {
+		return cmd.ExecuteWithArgs(args)
+	}
+
+	return outStr, err
 }
 
 func TestIntegration_Generate(t *testing.T) {
