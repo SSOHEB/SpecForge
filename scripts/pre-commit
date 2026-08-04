@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "Running pre-commit checks..."
+
+# Check formatting
+UNFORMATTED=$(gofmt -l .)
+if [ -n "$UNFORMATTED" ]; then
+  echo "Error: The following files are not formatted properly:"
+  echo "$UNFORMATTED"
+  echo "Run 'gofmt -w .' to fix them."
+  exit 1
+fi
+
+echo "Running go vet..."
+go vet ./...
+
+echo "Running go build..."
+go build ./...
+
+echo "Pre-commit checks passed!"

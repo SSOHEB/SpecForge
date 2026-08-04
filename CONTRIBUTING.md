@@ -51,6 +51,24 @@ Measures execution performance and memory allocations:
 make bench
 ```
 
+## Pre-commit checks
+
+To ensure code quality before pushing, you can set up pre-commit hooks. We support two options:
+
+**Option 1: Using the pre-commit framework (Recommended)**
+If you have [pre-commit](https://pre-commit.com) installed, run:
+```bash
+pre-commit install
+```
+This will configure hooks for `go fmt`, `go vet`, and `golangci-lint` to run automatically before every commit.
+
+**Option 2: Plain Git Hook**
+If you don't use the pre-commit framework, you can use the provided fallback script:
+```bash
+cp scripts/pre-commit .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
 ---
 
 ## Coding Style & Linters
