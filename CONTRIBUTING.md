@@ -1,6 +1,6 @@
-# Contributing to configforge
+# Contributing to specforge
 
-Thank you for your interest in contributing to `configforge`! Follow these guidelines to set up your environment, write tests, and submit changes.
+Thank you for your interest in contributing to `specforge`! Follow these guidelines to set up your environment, write tests, and submit changes.
 
 ---
 
@@ -12,8 +12,8 @@ Thank you for your interest in contributing to `configforge`! Follow these guide
    ```
 2. **Clone and Install Dependencies:**
    ```bash
-   git clone https://github.com/SSOHEB/configforge.git
-   cd configforge
+   git clone https://github.com/SSOHEB/SpecForge.git
+   cd specforge
    go mod download
    ```
 

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 // GenerateMarkdownDocs converts the AST into a structured Markdown configuration reference.

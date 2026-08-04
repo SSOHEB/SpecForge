@@ -5,7 +5,7 @@
 //
 // # Pipeline Role
 //
-// The parser is the first stage of the configforge pipeline:
+// The parser is the first stage of the specforge pipeline:
 //
 //	[YAML Spec] -> [parser] -> [schema (AST)] -> [generator/validator/runtime]
 //

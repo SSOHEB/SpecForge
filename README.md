@@ -1,6 +1,6 @@
-# configforge
+# specforge
 
-`configforge` is a semantic configuration management and generation framework for Go applications.
+`specforge` is a semantic configuration management and generation framework for Go applications.
 
 **Project Status: Feature-Complete (All 18 stages fully implemented and verified).**
 
@@ -8,17 +8,17 @@
 
 ## Overview
 
-`configforge` separates configuration **specification** from configuration **data**. By defining your configuration schema, validation rules, default values, and description comments in a single YAML file (`metadata.yaml`), `configforge` compiles this specification into an AST. This AST is then used to generate type-safe Go structs, JSON schemas for IDE autocomplete, and Markdown documentation, while also providing a runtime loader with default values, environment overrides, and file-watching hot reloads.
+`specforge` separates configuration **specification** from configuration **data**. By defining your configuration schema, validation rules, default values, and description comments in a single YAML file (`metadata.yaml`), `specforge` compiles this specification into an AST. This AST is then used to generate type-safe Go structs, JSON schemas for IDE autocomplete, and Markdown documentation, while also providing a runtime loader with default values, environment overrides, and file-watching hot reloads.
 
 ---
 
-## Why configforge?
+## Why specforge?
 
 In traditional Go application architectures, configuration management often falls into two patterns:
 1. **Plain Struct Unmarshaling:** Minimal validation, boilerplate code, zero defaults handling, and silent failures when required fields are missing.
 2. **Dynamic Maps/Loose Types (Viper):** Prone to typos, lacks compile-time type-safety, and bypasses Go's type compiler.
 
-`configforge` is inspired by the **OpenTelemetry Configuration Specification** philosophy. It allows developers to:
+`specforge` is inspired by the **OpenTelemetry Configuration Specification** philosophy. It allows developers to:
 * Declare all configuration rules in a metadata file.
 * Compile and validate the metadata structure at build-time.
 * Compile strongly typed Go config structures and functional APIs.
@@ -33,13 +33,13 @@ Download the compiled release binary for your OS and architecture from the GitHu
 
 ### 2. From Source
 ```bash
-go install github.com/SSOHEB/configforge/cmd/configforge@latest
+go install github.com/SSOHEB/SpecForge/cmd/specforge@latest
 ```
 
 ### 3. Via Docker
-Run `configforge` inside a container (sharing the working directory):
+Run `specforge` inside a container (sharing the working directory):
 ```bash
-docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/configforge:latest defaults -m metadata.yaml
+docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/specforge:latest defaults -m metadata.yaml
 ```
 
 ---
@@ -72,7 +72,7 @@ server:
 Compile the metadata specification into typed Go structures with a Functional Getter API:
 
 ```bash
-configforge generate --metadata metadata.yaml --out ./config --functional-api
+specforge generate --metadata metadata.yaml --out ./config --functional-api
 ```
 
 This generates `config/generated_config.go` containing:
@@ -105,9 +105,9 @@ import (
 	"fmt"
 	"log"
 
-	"configforge/internal/runtime"
-	"configforge/internal/schema"
-	"configforge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/runtime"
+	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/parser"
 )
 
 func main() {
@@ -135,44 +135,44 @@ Every command supports `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-o`
 ### `defaults`
 Prints a formatted table listing all defined configuration paths, Go types, and default values or required flags:
 ```bash
-configforge defaults --metadata metadata.yaml
+specforge defaults --metadata metadata.yaml
 ```
 
 ### `validate`
 Validates application configuration files against semantic constraints (ranges, enums, regexes, required keys):
 ```bash
-configforge validate --metadata metadata.yaml --config config.yaml
+specforge validate --metadata metadata.yaml --config config.yaml
 ```
 
 ### `generate`
 Compiles both the Draft-07 JSON Schema (`schema.json`) and the typed Go structs (`generated_config.go`):
 ```bash
-configforge generate --metadata metadata.yaml --out ./generated --functional-api
+specforge generate --metadata metadata.yaml --out ./generated --functional-api
 ```
 
 ### `schema`
 Generates and prints the JSON Schema document. Use `-w` to write to file:
 ```bash
-configforge schema --metadata metadata.yaml
+specforge schema --metadata metadata.yaml
 ```
 
 ### `docs`
 Generates structured Reference Markdown documentation:
 ```bash
-configforge docs --metadata metadata.yaml --out ./docs
+specforge docs --metadata metadata.yaml --out ./docs
 ```
 
 ### `version`
 Displays version details, Git commit hash, and build timestamp:
 ```bash
-configforge version
+specforge version
 ```
 
 ---
 
 ## Architecture
 
-`configforge` operates as a compiler pipeline separating frontend parsing from backend code generation and runtime layers:
+`specforge` operates as a compiler pipeline separating frontend parsing from backend code generation and runtime layers:
 
 ```
                   +-----------------------+
@@ -208,7 +208,7 @@ configforge version
 
 ## Testing
 
-configforge features a testing pyramid containing unit tests, golden tests, black-box integration tests, and benchmarks.
+specforge features a testing pyramid containing unit tests, golden tests, black-box integration tests, and benchmarks.
 
 ### 1. Unit Tests
 Verifies internal business rules of individual packages:

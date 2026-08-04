@@ -1,4 +1,4 @@
-// Package main compiles and generates cross-platform releases for configforge.
+// Package main compiles and generates cross-platform releases for specforge.
 package main
 
 import (
@@ -24,7 +24,7 @@ func main() {
 	commit := getGitCommit()
 	date := time.Now().Format(time.RFC3339)
 
-	fmt.Printf("Building configforge %s (commit: %s, date: %s)...\n", version, commit, date)
+	fmt.Printf("Building specforge %s (commit: %s, date: %s)...\n", version, commit, date)
 
 	targets := []target{
 		{"linux", "amd64", ""},
@@ -43,16 +43,16 @@ func main() {
 	var checksumLines []string
 
 	for _, t := range targets {
-		binaryName := fmt.Sprintf("configforge_%s_%s_%s%s", version, t.os, t.arch, t.ext)
+		binaryName := fmt.Sprintf("SPECFORGE_%s_%s_%s%s", version, t.os, t.arch, t.ext)
 		outPath := filepath.Join(distDir, binaryName)
 
 		fmt.Printf("Building %s/%s -> %s...\n", t.os, t.arch, outPath)
 
 		// Set environment variables for cross compilation
 		cmd := exec.Command("go", "build",
-			"-ldflags", fmt.Sprintf("-X configforge/cmd/configforge/cmd.version=%s -X configforge/cmd/configforge/cmd.commit=%s -X configforge/cmd/configforge/cmd.date=%s", version, commit, date),
+			"-ldflags", fmt.Sprintf("-X specforge/cmd/specforge/cmd.version=%s -X specforge/cmd/specforge/cmd.commit=%s -X specforge/cmd/specforge/cmd.date=%s", version, commit, date),
 			"-o", outPath,
-			"./cmd/configforge",
+			"./cmd/specforge",
 		)
 		cmd.Env = append(os.Environ(),
 			"GOOS="+t.os,

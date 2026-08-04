@@ -6,14 +6,14 @@ import (
 	"os"
 	"time"
 
-	"configforge/internal/parser"
-	"configforge/internal/runtime"
-	"configforge/internal/schema"
-	"configforge/internal/validator"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/runtime"
+	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/validator"
 )
 
 func main() {
-	configPath := os.Getenv("CONFIGFORGE_CONFIG_PATH")
+	configPath := os.Getenv("SPECFORGE_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/redis/config.yaml"
 		if _, err := os.Stat("config.yaml"); err == nil {

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"configforge/internal/parser"
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 
 	"github.com/santhosh-tekuri/jsonschema/v5"
 	"gopkg.in/yaml.v3"

@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"configforge/internal/parser"
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 	"github.com/spf13/cobra"
 )
 

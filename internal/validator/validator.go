@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 // Validate checks the raw configuration map against the semantic rules of the AST.

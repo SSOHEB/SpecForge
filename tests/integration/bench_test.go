@@ -4,15 +4,15 @@ import (
 	"os"
 	"testing"
 
-	"configforge/internal/generator"
-	"configforge/internal/parser"
-	"configforge/internal/runtime"
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/generator"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/runtime"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 func BenchmarkLoadAndPrepare(b *testing.B) {
-	os.Setenv("CONFIGFORGE_CONFIG_PATH", "../../examples/http-server/config.yaml")
-	defer os.Unsetenv("CONFIGFORGE_CONFIG_PATH")
+	os.Setenv("SPECFORGE_CONFIG_PATH", "../../examples/http-server/config.yaml")
+	defer os.Unsetenv("SPECFORGE_CONFIG_PATH")
 
 	rawMeta, err := parser.ParseFile("../../examples/http-server/metadata.yaml")
 	if err != nil {

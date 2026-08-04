@@ -3,10 +3,10 @@ package cmd
 import (
 	"os"
 
-	"configforge/internal/parser"
-	"configforge/internal/runtime"
-	"configforge/internal/schema"
-	"configforge/internal/validator"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/runtime"
+	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/validator"
 	"github.com/spf13/cobra"
 )
 

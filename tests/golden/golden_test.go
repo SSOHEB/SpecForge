@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"configforge/internal/generator"
-	"configforge/internal/parser"
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/generator"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 var update = flag.Bool("update", false, "update golden files")

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 type testDefaultsConfig struct {

@@ -5,9 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"configforge/internal/generator"
-	"configforge/internal/parser"
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/generator"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 	"github.com/spf13/cobra"
 )
 

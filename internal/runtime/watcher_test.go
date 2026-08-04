@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 type testWatcherConfig struct {

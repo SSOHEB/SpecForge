@@ -1,6 +1,6 @@
-# configforge Narrative Developer Guide
+# specforge Narrative Developer Guide
 
-Welcome to `configforge`! This guide walks you through defining, generating, loading, and dynamically reloading configurations in Go applications.
+Welcome to `specforge`! This guide walks you through defining, generating, loading, and dynamically reloading configurations in Go applications.
 
 ---
 
@@ -47,13 +47,13 @@ server:
 Use the CLI to compile your metadata file:
 
 ```bash
-configforge generate --metadata metadata.yaml --out ./config --functional-api
+specforge generate --metadata metadata.yaml --out ./config --functional-api
 ```
 
 ### Functional API vs Plain Structs
 By default, the CLI generates standard public fields. However, using `--functional-api` generates getter methods (e.g., `Port()`). 
 
-To resolve name collisions in Go (since a struct cannot have a field and a method with the same name), configforge automatically appends a `Field` suffix to the struct properties:
+To resolve name collisions in Go (since a struct cannot have a field and a method with the same name), specforge automatically appends a `Field` suffix to the struct properties:
 ```go
 // Generated output when --functional-api is enabled
 type ServerConfig struct {
@@ -72,7 +72,7 @@ func (s *ServerConfig) Port() int    { return s.PortField }
 The `internal/runtime` package processes the configuration lifecycle in three sequential steps:
 
 1. **Defaults Injection:** Missing fields in the YAML are populated using AST-defined defaults.
-2. **Environment Variable Overrides:** Environment overrides are mapped. Dotted paths are joined with `_`, capitalized, and prefixed with `CONFIGFORGE_` (e.g., `server.port` becomes `CONFIGFORGE_SERVER_PORT`).
+2. **Environment Variable Overrides:** Environment overrides are mapped. Dotted paths are joined with `_`, capitalized, and prefixed with `SPECFORGE_` (e.g., `server.port` becomes `SPECFORGE_SERVER_PORT`).
 3. **Semantic Validation:** The configuration is validated against the AST semantic rules (required checks, ranges, enums, regex patterns).
 
 ```go

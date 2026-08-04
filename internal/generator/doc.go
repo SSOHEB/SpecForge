@@ -5,7 +5,7 @@
 //
 // # Pipeline Role
 //
-// Generator is the backend compiler target of the configforge pipeline:
+// Generator is the backend compiler target of the specforge pipeline:
 //
 //	[schema (AST)] -> [generator] -> [generated_config.go] (Go Code)
 //	                               -> [schema.json] (JSON Schema)

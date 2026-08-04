@@ -36,9 +36,9 @@ func LoadFile[T any](path string) (*T, error) {
 	return LoadReader[T](f)
 }
 
-// Load looks up CONFIGFORGE_CONFIG_PATH env var (defaulting to "./config.yaml") and loads it into a new instance of T.
+// Load looks up SPECFORGE_CONFIG_PATH env var (defaulting to "./config.yaml") and loads it into a new instance of T.
 func Load[T any]() (*T, error) {
-	path := os.Getenv("CONFIGFORGE_CONFIG_PATH")
+	path := os.Getenv("SPECFORGE_CONFIG_PATH")
 	if path == "" {
 		path = "./config.yaml"
 	}

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 	"gopkg.in/yaml.v3"
 )
 
@@ -130,9 +130,9 @@ func copySlice(src []any) []any {
 	return dst
 }
 
-// LoadAndPrepare loads raw config from default CONFIGFORGE_CONFIG_PATH, applies defaults, and unmarshals.
+// LoadAndPrepare loads raw config from default SPECFORGE_CONFIG_PATH, applies defaults, and unmarshals.
 func LoadAndPrepare[T any](ast *schema.AST) (*T, map[string]any, error) {
-	path := os.Getenv("CONFIGFORGE_CONFIG_PATH")
+	path := os.Getenv("SPECFORGE_CONFIG_PATH")
 	if path == "" {
 		path = "./config.yaml"
 	}
