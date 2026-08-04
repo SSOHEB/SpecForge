@@ -128,9 +128,6 @@ instrumentation:
   http:
     port: 9090
 `
-	// Sleep briefly to ensure the watcher's event loop is fully established before we modify
-	time.Sleep(100 * time.Millisecond)
-
 	if err := os.WriteFile(configPath, []byte(newConfigYAML), 0644); err != nil {
 		t.Fatalf("failed to modify config: %v", err)
 	}

@@ -25,6 +25,7 @@ type Watcher[T any] struct {
 	stopChan     chan struct{}
 	stopOnce     sync.Once
 	opts         RuntimeOptions
+	reloadMu     sync.Mutex
 }
 
 // NewWatcher loads the initial config, validates it, and returns a new Watcher.
@@ -38,6 +39,12 @@ func NewWatcher[T any](ast *schema.AST, path string, opts RuntimeOptions) (*Watc
 	fw, err := fsnotify.NewWatcher()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create fsnotify watcher: %w", err)
+	}
+
+	dir := filepath.Dir(path)
+	if err := fw.Add(dir); err != nil {
+		fw.Close()
+		return nil, fmt.Errorf("failed to watch directory %s: %w", dir, err)
 	}
 
 	return &Watcher[T]{
@@ -76,11 +83,6 @@ func (w *Watcher[T]) OnError(fn func(err error)) {
 // 1. Editors saving via temp-file-rename (like Vim/IntelliJ) replace the inode, which breaks file-level watchers.
 // 2. If the file is deleted then recreated, directory watching survives and naturally picks up the recreation.
 func (w *Watcher[T]) Start(ctx context.Context) error {
-	dir := filepath.Dir(w.filePath)
-	if err := w.watcher.Add(dir); err != nil {
-		return fmt.Errorf("failed to watch directory %s: %w", dir, err)
-	}
-
 	var timer *time.Timer
 	var timerMu sync.Mutex
 
@@ -138,6 +140,9 @@ func (w *Watcher[T]) Stop() error {
 }
 
 func (w *Watcher[T]) reload() {
+	w.reloadMu.Lock()
+	defer w.reloadMu.Unlock()
+
 	cfg, _, err := LoadAndPrepareFile[T](w.ast, w.filePath, w.opts)
 	if err != nil {
 		w.reportError(err)
