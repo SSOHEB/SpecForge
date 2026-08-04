@@ -1,5 +1,7 @@
 # specforge
 
+[![codecov](https://codecov.io/gh/SSOHEB/configforge/graph/badge.svg)](https://codecov.io/gh/SSOHEB/configforge)
+
 `specforge` is a semantic configuration management and generation framework for Go applications.
 
 **Project Status: Feature-Complete (All 18 stages fully implemented and verified).**
