@@ -1,3 +1,57 @@
-[1;94m  •[m [1mchecking[m                                  [1;94mpath[m=.goreleaser.yaml
-[1;94m  •[m [1m1 configuration file(s) validated[m
+[1;94m  •[m [1mstarting release[m
+[1;93m  •[m [1;93mskipping announce, publish, and validate...[m
+[1;94m  •[m [1mcleaning distribution directory[m
+[1;94m  •[m [1mloading environment variables[m
+[1;94m  •[m [1mgetting and validating git state[m
+[1;93m    •[m ignoring errors because this is a snapshot     [1;93merror[m=git doesn't contain any tags - either add a tag or use --snapshot
+[1;94m    •[m using tags                                     [1;94mprevious[m=<unknown> [1;94mcurrent[m=v0.0.0
+[1;93m    •[m pipe skipped or partially skipped              [1;93mreason[m=disabled during snapshot mode
+[1;94m  •[m [1mparsing tag[m
+[1;94m  •[m [1msetting defaults[m
+[1;94m  •[m [1msnapshotting[m
+[1;94m    •[m building snapshot...                           [1;94mversion[m=0.0.0-SNAPSHOT-a8534b8
+[1;94m  •[m [1mensuring distribution directory[m
+[1;94m  •[m [1msetting up metadata[m
+[1;94m  •[m [1mwriting release metadata[m
+[1;94m  •[m [1mloading go mod information[m
+[1;94m  •[m [1mbuild prerequisites[m
+[1;94m  •[m [1mbuilding binaries[m
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=darwin_arm64_v8.0
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=linux_amd64_v1
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=darwin_amd64_v1
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=linux_arm64_v8.0
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_linux_arm64_v8.0/specforge ./cmd/specforge
+      [1;94moutput[m=
+    [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
+    [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
+    [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=windows_amd64_v1
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_linux_amd64_v1/specforge ./cmd/specforge
+      [1;94moutput[m=
+    [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
+    [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
+    [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_darwin_amd64_v1/specforge ./cmd/specforge
+      [1;94moutput[m=
+    [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
+    [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
+    [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_darwin_arm64_v8.0/specforge ./cmd/specforge
+      [1;94moutput[m=
+    [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
+    [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
+    [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_windows_amd64_v1/specforge.exe ./cmd/specforge
+      [1;94moutput[m=
+    [1;94m  │ [mgo: downloading github.com/inconshreveable/mousetrap v1.1.0
+[1;94m      •[m [3;2mtook: 36s[m
+[1;94m  •[m [1marchives[m
+[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_darwin_arm64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_darwin_amd64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_linux_arm64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_linux_amd64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_windows_amd64.zip
+[1;94m  •[m [1mcalculating checksums[m
+[1;94m  •[m [1mwriting artifacts metadata[m
+[1;94m  •[m [1mrelease succeeded after 37s[m
 [1;94m  •[m thanks for using GoReleaser!
