@@ -14,9 +14,9 @@ import (
 // Setting this to false changes the precedence so that YAML values take precedence over environment variables.
 var EnvOverridesPrecedeYAML = true
 
-// ApplyEnvOverrides walks the AST, checks for SPECFORGE_ prefixed env vars corresponding
+// ApplyEnvOverrides walks the AST, checks for prefixed env vars corresponding
 // to each field's path, parses them, and overwrites the config values in raw.
-func ApplyEnvOverrides(ast *schema.AST, raw map[string]any, originalRaw map[string]any) (map[string]any, error) {
+func ApplyEnvOverrides(ast *schema.AST, raw map[string]any, originalRaw map[string]any, prefix string) (map[string]any, error) {
 	if ast == nil || ast.Root == nil {
 		return raw, nil
 	}
@@ -27,12 +27,12 @@ func ApplyEnvOverrides(ast *schema.AST, raw map[string]any, originalRaw map[stri
 	var walk func(node *schema.Node) error
 	walk = func(node *schema.Node) error {
 		for _, f := range node.Fields {
-			// Construct SPECFORGE_ prefixed uppercase env var name
+			// Construct prefixed uppercase env var name
 			envParts := make([]string, len(f.Path))
 			for i, p := range f.Path {
 				envParts[i] = strings.ToUpper(p)
 			}
-			envName := "SPECFORGE_" + strings.Join(envParts, "_")
+			envName := prefix + strings.Join(envParts, "_")
 
 			envVal, exists := os.LookupEnv(envName)
 			if !exists {

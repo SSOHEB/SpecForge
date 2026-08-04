@@ -24,12 +24,13 @@ type Watcher[T any] struct {
 	watcher      *fsnotify.Watcher
 	stopChan     chan struct{}
 	stopOnce     sync.Once
+	opts         RuntimeOptions
 }
 
 // NewWatcher loads the initial config, validates it, and returns a new Watcher.
 // If the initial config is invalid, it fails fast.
-func NewWatcher[T any](ast *schema.AST, path string) (*Watcher[T], error) {
-	cfg, _, err := LoadAndPrepareFile[T](ast, path)
+func NewWatcher[T any](ast *schema.AST, path string, opts RuntimeOptions) (*Watcher[T], error) {
+	cfg, _, err := LoadAndPrepareFile[T](ast, path, opts)
 	if err != nil {
 		return nil, fmt.Errorf("initial config load failed: %w", err)
 	}
@@ -45,6 +46,7 @@ func NewWatcher[T any](ast *schema.AST, path string) (*Watcher[T], error) {
 		current:  cfg,
 		watcher:  fw,
 		stopChan: make(chan struct{}),
+		opts:     opts,
 	}, nil
 }
 
@@ -136,7 +138,7 @@ func (w *Watcher[T]) Stop() error {
 }
 
 func (w *Watcher[T]) reload() {
-	cfg, _, err := LoadAndPrepareFile[T](w.ast, w.filePath)
+	cfg, _, err := LoadAndPrepareFile[T](w.ast, w.filePath, w.opts)
 	if err != nil {
 		w.reportError(err)
 		return

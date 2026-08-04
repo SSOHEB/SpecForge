@@ -1,17 +1,13 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/validator"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
 func main() {
@@ -31,73 +27,34 @@ func main() {
 		metadataFile = "metadata.yaml"
 	}
 
-	// 1. Load metadata and build AST for semantic rules definition
-	rawMeta, err := parser.ParseFile(metadataFile)
-	if err != nil {
-		fmt.Printf("failed to parse metadata: %v\n", err)
-		os.Exit(1)
-	}
-	ast, err := schema.Build(rawMeta)
-	if err != nil {
-		fmt.Printf("failed to build AST: %v\n", err)
-		os.Exit(1)
-	}
-
 	if *watch {
-		// Start Hot Reload Watcher
-		w, err := runtime.NewWatcher[Config](ast, configPath)
+		stop, err := config.Watch[Config](configPath, func(cfg *Config, err error) {
+			if err != nil {
+				fmt.Printf("config reload failed: %v\n", err)
+				return
+			}
+			fmt.Printf("config reloaded: new port (method) = %d, new port (field) = %d\n",
+				cfg.Instrumentation().Http().Port(),
+				cfg.InstrumentationField.HttpField.PortField)
+		}, config.WithMetadataPath(metadataFile))
 		if err != nil {
 			fmt.Printf("failed to initialize watcher: %v\n", err)
 			os.Exit(1)
 		}
-
-		w.OnReload(func(cfg *Config) {
-			fmt.Printf("config reloaded: new port (method) = %d, new port (field) = %d\n",
-				cfg.Instrumentation().Http().Port(),
-				cfg.InstrumentationField.HttpField.PortField)
-		})
-
-		w.OnError(func(err error) {
-			fmt.Printf("config reload failed: %v\n", err)
-		})
-
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
-
-		go func() {
-			if err := w.Start(ctx); err != nil {
-				fmt.Printf("watcher error: %v\n", err)
-			}
-		}()
+		defer stop()
 
 		fmt.Println("watching config file for changes... press Ctrl+C to stop")
-
-		// Block until SIGINT/SIGTERM
 		sigs := make(chan os.Signal, 1)
 		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 		<-sigs
 
 		fmt.Println("\nstopping watcher...")
-		_ = w.Stop()
-		fmt.Println("stopped")
 		os.Exit(0)
 	}
 
-	// One-shot behavior
-	// 2. Load config, apply defaults, and convert to typed struct in one step
-	cfg, rawConfig, err := runtime.LoadAndPrepareFile[Config](ast, configPath)
+	cfg, err := config.Load[Config](configPath, config.WithMetadataPath(metadataFile))
 	if err != nil {
-		fmt.Printf("failed to load and prepare config: %v\n", err)
-		os.Exit(1)
-	}
-
-	// 3. Validate raw configuration (post-defaults) against AST rules
-	valErrs := validator.Validate(ast, rawConfig)
-	if len(valErrs) > 0 {
-		fmt.Println("Validation failed:")
-		for _, valErr := range valErrs {
-			fmt.Println(valErr.Error())
-		}
+		fmt.Printf("Validation or loading failed:\n%v\n", err)
 		os.Exit(1)
 	}
 

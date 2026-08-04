@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/validator"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
 func main() {
@@ -26,32 +24,9 @@ func main() {
 		metadataFile = "metadata.yaml"
 	}
 
-	// 1. Load metadata and build AST
-	rawMeta, err := parser.ParseFile(metadataFile)
+	cfg, err := config.Load[Config](configPath, config.WithMetadataPath(metadataFile))
 	if err != nil {
-		fmt.Printf("failed to parse metadata: %v\n", err)
-		os.Exit(1)
-	}
-	ast, err := schema.Build(rawMeta)
-	if err != nil {
-		fmt.Printf("failed to build AST: %v\n", err)
-		os.Exit(1)
-	}
-
-	// 2. Load config, apply defaults & overrides
-	cfg, rawConfig, err := runtime.LoadAndPrepareFile[Config](ast, configPath)
-	if err != nil {
-		fmt.Printf("failed to load config: %v\n", err)
-		os.Exit(1)
-	}
-
-	// 3. Validate raw config
-	valErrs := validator.Validate(ast, rawConfig)
-	if len(valErrs) > 0 {
-		fmt.Println("Validation failed:")
-		for _, valErr := range valErrs {
-			fmt.Println(valErr.Error())
-		}
+		fmt.Printf("failed to load configuration:\n%v\n", err)
 		os.Exit(1)
 	}
 
@@ -69,7 +44,7 @@ func main() {
 
 	// Reachability check choice: We perform a raw TCP dial using the loaded host, port, and dial timeout.
 	// This avoids external third-party dependencies while keeping the reachability check buildable and honest.
-	address := fmt.Sprintf("%s:%d", cfg.Redis().Host(), cfg.Redis().Port())
+	address := net.JoinHostPort(cfg.Redis().Host(), strconv.Itoa(cfg.Redis().Port()))
 	dialTimeout := time.Duration(cfg.Redis().DialTimeout()) * time.Second
 
 	fmt.Printf("\nAttempting connection to Redis at %s (timeout: %v)...\n", address, dialTimeout)

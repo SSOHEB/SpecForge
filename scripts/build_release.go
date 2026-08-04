@@ -1,4 +1,5 @@
 // Package main compiles and generates cross-platform releases for specforge.
+// Note: This script is superseded by .goreleaser.yaml at the repo root.
 package main
 
 import (

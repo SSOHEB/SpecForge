@@ -1,40 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"net"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/validator"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
-func TestPostgresE2E(t *testing.T) {
+func TestPostgresConfigLoadAndValidate(t *testing.T) {
 	configPath := "config.yaml"
-
-	// 1. Load metadata and build AST
-	rawMeta, err := parser.ParseFile("metadata.yaml")
-	if err != nil {
-		t.Fatalf("failed to parse metadata: %v", err)
+	if _, err := os.Stat(configPath); err != nil {
+		t.Skipf("Skipping test: %s not found. Run from examples/postgres directory.", configPath)
 	}
-	ast, err := schema.Build(rawMeta)
-	if err != nil {
-		t.Fatalf("failed to build AST: %v", err)
+	
+	metadataFile := "metadata.yaml"
+	if _, err := os.Stat(metadataFile); err != nil {
+		t.Skipf("Skipping test: %s not found.", metadataFile)
 	}
 
-	// 2. Load config, apply defaults & overrides
-	cfg, rawConfig, err := runtime.LoadAndPrepareFile[Config](ast, configPath)
+	cfg, err := config.Load[Config](configPath, config.WithMetadataPath(metadataFile))
 	if err != nil {
 		t.Fatalf("failed to load config: %v", err)
-	}
-
-	// 3. Validate raw config
-	valErrs := validator.Validate(ast, rawConfig)
-	if len(valErrs) > 0 {
-		t.Fatalf("Validation failed: %v", valErrs)
 	}
 
 	t.Logf("config valid")
@@ -53,7 +42,7 @@ func TestPostgresE2E(t *testing.T) {
 	// Reconnection retry check: We wrap a TCP connection attempt to Postgres in a loop
 	attempts := cfg.Postgres().RetryAttempts()
 	backoff := time.Duration(cfg.Postgres().RetryBackoffMs()) * time.Millisecond
-	address := fmt.Sprintf("%s:%d", cfg.Postgres().Host(), cfg.Postgres().Port())
+	address := net.JoinHostPort(cfg.Postgres().Host(), strconv.Itoa(cfg.Postgres().Port()))
 	dialTimeout := 200 * time.Millisecond // short timeout for test speed
 
 	t.Logf("Attempting connection to Postgres at %s...", address)

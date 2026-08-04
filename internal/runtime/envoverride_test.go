@@ -73,7 +73,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 		raw := map[string]any{
 			"string_field": "yaml",
 		}
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw)
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -94,7 +94,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 			},
 		}
 
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw)
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -114,7 +114,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 		os.Setenv("SPECFORGE_INTEGER_FIELD", "100")
 
 		raw := make(map[string]any)
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw)
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -131,7 +131,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 		os.Setenv("SPECFORGE_STRING_MAP", "a=1, b=2")
 
 		raw := make(map[string]any)
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw)
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -152,7 +152,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 		os.Setenv("SPECFORGE_BOOLEAN_FIELD", "invalid_bool")
 
 		raw := make(map[string]any)
-		_, err := ApplyEnvOverrides(ast, raw, raw)
+		_, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
 		if err == nil {
 			t.Fatalf("expected error, got nil")
 		}

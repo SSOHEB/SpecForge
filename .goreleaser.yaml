@@ -1,0 +1,57 @@
+version: 2
+project_name: specforge
+builds:
+  - main: ./cmd/specforge
+    id: "specforge"
+    binary: specforge
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -X specforge/cmd/specforge/cmd.version={{.Version}} -X specforge/cmd/specforge/cmd.commit={{.Commit}} -X specforge/cmd/specforge/cmd.date={{.Date}}
+
+archives:
+  - format: tar.gz
+    name_template: "SPECFORGE_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+changelog:
+  groups:
+    - title: Features
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: Fixes
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 1
+    - title: Documentation
+      regexp: "^.*docs[(\\w)]*:+.*$"
+      order: 2
+    - title: Testing
+      regexp: "^.*test[(\\w)]*:+.*$"
+      order: 3
+    - title: Others
+      order: 999
+
+# TODO: Homebrew tap and Docker publishing
+# brews:
+#   - repository:
+#       owner: SSOHEB
+#       name: homebrew-tap
+# dockers:
+#   - image_templates:
+#     - "ssoheb/specforge:{{ .Version }}"

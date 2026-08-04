@@ -64,7 +64,7 @@ func convertMapToStruct[T any](raw map[string]any) (*T, error) {
 }
 
 // LoadAndPrepareFile loads raw config, applies defaults, overrides with environment variables, and unmarshals into a typed struct.
-func LoadAndPrepareFile[T any](ast *schema.AST, path string) (*T, map[string]any, error) {
+func LoadAndPrepareFile[T any](ast *schema.AST, path string, opts RuntimeOptions) (*T, map[string]any, error) {
 	raw, err := LoadFile[map[string]any](path)
 	if err != nil {
 		// If file is empty, we still apply all defaults from AST.
@@ -82,8 +82,15 @@ func LoadAndPrepareFile[T any](ast *schema.AST, path string) (*T, map[string]any
 	// Apply defaults
 	rawWithDefaults := ApplyDefaults(ast, *raw)
 
-	// Apply env overrides
-	rawWithOverrides, err := ApplyEnvOverrides(ast, rawWithDefaults, originalRaw)
+	// Apply env overrides if not disabled
+	rawWithOverrides := rawWithDefaults
+	if !opts.DisableEnv {
+		prefix := opts.EnvPrefix
+		if prefix == "" {
+			prefix = "SPECFORGE_"
+		}
+		rawWithOverrides, err = ApplyEnvOverrides(ast, rawWithDefaults, originalRaw, prefix)
+	}
 	if err != nil {
 		return nil, nil, err
 	}
@@ -136,7 +143,7 @@ func LoadAndPrepare[T any](ast *schema.AST) (*T, map[string]any, error) {
 	if path == "" {
 		path = "./config.yaml"
 	}
-	return LoadAndPrepareFile[T](ast, path)
+	return LoadAndPrepareFile[T](ast, path, RuntimeOptions{})
 }
 
 func convertToMapStringAny(val any) map[string]any {

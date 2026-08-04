@@ -38,7 +38,7 @@ func TestWatcher_Success(t *testing.T) {
 		t.Fatalf("failed to write initial config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath)
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
@@ -94,7 +94,7 @@ func TestWatcher_FailFast(t *testing.T) {
 		t.Fatalf("failed to write invalid config: %v", err)
 	}
 
-	_, err := NewWatcher[testWatcherConfig](ast, configPath)
+	_, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
 	if err == nil {
 		t.Fatalf("expected NewWatcher to fail fast on invalid YAML, but it succeeded")
 	}
@@ -109,7 +109,7 @@ func TestWatcher_InvalidReload(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath)
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
@@ -157,7 +157,7 @@ func TestWatcher_Debounce(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath)
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
@@ -204,7 +204,7 @@ func TestWatcher_Stop(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath)
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}

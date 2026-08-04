@@ -4,46 +4,29 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/validator"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
 func main() {
 	configPath := os.Getenv("SPECFORGE_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/postgres/config.yaml"
-	}
-
-	// 1. Load metadata and build AST
-	rawMeta, err := parser.ParseFile("examples/postgres/metadata.yaml")
-	if err != nil {
-		fmt.Printf("failed to parse metadata: %v\n", err)
-		os.Exit(1)
-	}
-	ast, err := schema.Build(rawMeta)
-	if err != nil {
-		fmt.Printf("failed to build AST: %v\n", err)
-		os.Exit(1)
-	}
-
-	// 2. Load config, apply defaults & overrides
-	cfg, rawConfig, err := runtime.LoadAndPrepareFile[Config](ast, configPath)
-	if err != nil {
-		fmt.Printf("failed to load config: %v\n", err)
-		os.Exit(1)
-	}
-
-	// 3. Validate raw config
-	valErrs := validator.Validate(ast, rawConfig)
-	if len(valErrs) > 0 {
-		fmt.Println("Validation failed:")
-		for _, valErr := range valErrs {
-			fmt.Println(valErr.Error())
+		if _, err := os.Stat("config.yaml"); err == nil {
+			configPath = "config.yaml"
 		}
+	}
+
+	metadataFile := "examples/postgres/metadata.yaml"
+	if _, err := os.Stat("metadata.yaml"); err == nil {
+		metadataFile = "metadata.yaml"
+	}
+
+	cfg, err := config.Load[Config](configPath, config.WithMetadataPath(metadataFile))
+	if err != nil {
+		fmt.Printf("failed to load configuration:\n%v\n", err)
 		os.Exit(1)
 	}
 
@@ -64,7 +47,7 @@ func main() {
 	// governed by the config's RetryAttempts and RetryBackoffMs values.
 	attempts := cfg.Postgres().RetryAttempts()
 	backoff := time.Duration(cfg.Postgres().RetryBackoffMs()) * time.Millisecond
-	address := fmt.Sprintf("%s:%d", cfg.Postgres().Host(), cfg.Postgres().Port())
+	address := net.JoinHostPort(cfg.Postgres().Host(), strconv.Itoa(cfg.Postgres().Port()))
 	dialTimeout := 2 * time.Second
 
 	fmt.Printf("\nAttempting connection to Postgres at %s...\n", address)

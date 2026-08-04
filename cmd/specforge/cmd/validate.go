@@ -34,7 +34,7 @@ and runs the validator checking all rules.`,
 			return newUserError("invalid metadata spec layout: %v", err)
 		}
 
-		_, rawConfig, err := runtime.LoadAndPrepareFile[map[string]any](ast, configPath)
+		_, rawConfig, err := runtime.LoadAndPrepareFile[map[string]any](ast, configPath, runtime.RuntimeOptions{})
 		if err != nil {
 			return newUserError("failed to load configuration at %s: %v", configPath, err)
 		}
