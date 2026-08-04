@@ -9,6 +9,8 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -26,8 +28,10 @@ jobs:
         
       - name: Run GoReleaser Check
         run: |
-          ~/go/bin/goreleaser check 2>&1 | tee log.txt
-          cat log.txt | nc termbin.com 9999 > termbin.txt
-          echo "TERMBIN URL:"
-          cat termbin.txt
+          ~/go/bin/goreleaser check 2>&1 | tee goreleaser_log.txt
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add goreleaser_log.txt
+          git commit -m "ci: save goreleaser log"
+          git push || true
           exit $PIPESTATUS
