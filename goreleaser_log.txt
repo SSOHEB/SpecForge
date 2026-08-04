@@ -1,0 +1,5 @@
+[1;94m  •[m [1mchecking[m                                  [1;94mpath[m=.goreleaser.yaml
+[1;93m  •[m [1;93mDEPRECATED: [40m [m[94;40marchives.format[m[40m [m should not be used anymore, check [33mhttps://goreleaser.com/deprecations#archivesformat[m for more info[m
+[1;93m  •[m [1;93mDEPRECATED: [40m [m[94;40marchives.format_overrides.format[m[40m [m should not be used anymore, check [33mhttps://goreleaser.com/deprecations#archivesformat_overridesformat[m for more info[m
+[1;93m  •[m .goreleaser.yaml                                 [1;93merror[m=configuration is valid, but uses deprecated properties
+[1;91m  ⨯[m check failed                                     [1;91merror[m=1 out of 1 configuration file(s) have issues
