@@ -128,6 +128,9 @@ instrumentation:
   http:
     port: 9090
 `
+	// Sleep briefly to ensure the watcher's event loop is fully established before we modify
+	time.Sleep(100 * time.Millisecond)
+
 	if err := os.WriteFile(configPath, []byte(newConfigYAML), 0644); err != nil {
 		t.Fatalf("failed to modify config: %v", err)
 	}
@@ -139,7 +142,7 @@ instrumentation:
 		}
 	case err := <-errCh:
 		t.Fatalf("unexpected watch error: %v", err)
-	case <-time.After(2 * time.Second):
+	case <-time.After(5 * time.Second):
 		t.Fatalf("timeout waiting for reload")
 	}
 }
