@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/SSOHEB/configforge/internal/parser"
-	"github.com/SSOHEB/configforge/internal/runtime"
-	"github.com/SSOHEB/configforge/internal/schema"
-	"github.com/SSOHEB/configforge/internal/validator"
+	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/SpecForge/internal/runtime"
+	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/validator"
 )
 
 type options struct {

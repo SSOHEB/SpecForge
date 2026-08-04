@@ -1,4 +1,4 @@
-module github.com/SSOHEB/configforge
+module github.com/SSOHEB/SpecForge
 
 go 1.24
 

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/SSOHEB/configforge/pkg/config"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
 func TestPostgresConfigLoadAndValidate(t *testing.T) {

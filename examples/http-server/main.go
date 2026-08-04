@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/SSOHEB/configforge/pkg/config"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
 func main() {

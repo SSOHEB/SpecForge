@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/SSOHEB/configforge/pkg/config"
+	"github.com/SSOHEB/SpecForge/pkg/config"
 )
 
 func main() {

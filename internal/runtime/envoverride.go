@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/SSOHEB/configforge/internal/schema"
+	"github.com/SSOHEB/SpecForge/internal/schema"
 )
 
 // EnvOverridesPrecedeYAML controls the precedence order between environment variables and YAML values.
