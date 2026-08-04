@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	yamlparser "github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	yamlparser "github.com/SSOHEB/configforge/internal/parser"
+	"github.com/SSOHEB/configforge/internal/schema"
 )
 
 func TestMarkdownDocsGeneration(t *testing.T) {

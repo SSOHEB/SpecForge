@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/pkg/config"
+	"github.com/SSOHEB/configforge/pkg/config"
 )
 
 type testConfig struct {

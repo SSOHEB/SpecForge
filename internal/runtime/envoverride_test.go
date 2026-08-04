@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/validator"
+	"github.com/SSOHEB/configforge/internal/parser"
+	"github.com/SSOHEB/configforge/internal/schema"
+	"github.com/SSOHEB/configforge/internal/validator"
 )
 
 type testEnvConfig struct {

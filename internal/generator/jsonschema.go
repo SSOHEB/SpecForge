@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"sort"
 
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/configforge/internal/schema"
 )
 
 // GenerateJSONSchema consumes the AST and produces pretty-printed, deterministic JSON Schema bytes.

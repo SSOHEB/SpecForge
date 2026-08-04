@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/configforge/internal/parser"
 )
 
 // Build recursively walks raw parser metadata and constructs the normalized AST.

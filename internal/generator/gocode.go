@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/configforge/internal/schema"
 )
 
 // GoFormatError is returned when go/format.Source fails to format the generated source code.

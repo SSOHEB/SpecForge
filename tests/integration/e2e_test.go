@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/cmd/specforge/cmd"
+	"github.com/SSOHEB/configforge/cmd/specforge/cmd"
 )
 
 func runCli(args ...string) (string, error) {

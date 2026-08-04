@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/configforge/internal/parser"
 )
 
 func TestToGoName(t *testing.T) {

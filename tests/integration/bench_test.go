@@ -4,10 +4,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/internal/generator"
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/configforge/internal/generator"
+	"github.com/SSOHEB/configforge/internal/parser"
+	"github.com/SSOHEB/configforge/internal/runtime"
+	"github.com/SSOHEB/configforge/internal/schema"
 )
 
 func BenchmarkLoadAndPrepare(b *testing.B) {

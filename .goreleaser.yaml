@@ -17,7 +17,7 @@ builds:
       - goos: windows
         goarch: arm64
     ldflags:
-      - -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.version={{.Version}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.commit={{.Commit}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.date={{.Date}}
+      - -X github.com/SSOHEB/configforge/cmd/specforge/cmd.version={{.Version}} -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit={{.Commit}} -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date={{.Date}}
 
 archives:
   - format: tar.gz

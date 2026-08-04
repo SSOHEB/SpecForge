@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/configforge/internal/schema"
 	"gopkg.in/yaml.v3"
 )
 

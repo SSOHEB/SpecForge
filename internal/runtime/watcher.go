@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/configforge/internal/schema"
 	"github.com/fsnotify/fsnotify"
 )
 
