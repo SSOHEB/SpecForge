@@ -26,13 +26,8 @@ jobs:
       - name: Install goreleaser
         run: go install github.com/goreleaser/goreleaser/v2@latest
         
+      - name: Run GoReleaser Check
+        run: ~/go/bin/goreleaser check
+
       - name: Run GoReleaser Release
-        run: |
-          ~/go/bin/goreleaser check
-          ~/go/bin/goreleaser release --snapshot --clean 2>&1 | tee goreleaser_log.txt
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add goreleaser_log.txt
-          git commit -m "ci: save goreleaser release log"
-          git push || true
-          exit $PIPESTATUS
+        run: ~/go/bin/goreleaser release --snapshot --clean
