@@ -4,7 +4,7 @@
   <img src="assets/logo.svg" alt="codrao logo" width="360">
 </p>
 
-[![CI](https://github.com/SSOHEB/SpecForge/actions/workflows/ci.yml/badge.svg)](https://github.com/SSOHEB/SpecForge/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/SSOHEB/SpecForge/graph/badge.svg)](https://codecov.io/gh/SSOHEB/SpecForge) [![Go Report Card](https://goreportcard.com/badge/github.com/SSOHEB/SpecForge)](https://goreportcard.com/report/github.com/SSOHEB/SpecForge) [![Go Reference](https://pkg.go.dev/badge/github.com/SSOHEB/SpecForge.svg)](https://pkg.go.dev/github.com/SSOHEB/SpecForge) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 `codrao` is a semantic configuration management and generation framework for Go applications.
 
 
