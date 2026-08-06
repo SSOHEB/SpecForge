@@ -3,7 +3,16 @@
 [![CI](https://github.com/SSOHEB/SpecForge/actions/workflows/ci.yml/badge.svg)](https://github.com/SSOHEB/SpecForge/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/SSOHEB/SpecForge/graph/badge.svg)](https://codecov.io/gh/SSOHEB/SpecForge) [![Go Report Card](https://goreportcard.com/badge/github.com/SSOHEB/SpecForge)](https://goreportcard.com/report/github.com/SSOHEB/SpecForge) [![Go Reference](https://pkg.go.dev/badge/github.com/SSOHEB/SpecForge.svg)](https://pkg.go.dev/github.com/SSOHEB/SpecForge) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 `specforge` is a semantic configuration management and generation framework for Go applications.
 
-**Project Status: Feature-Complete (All 18 stages fully implemented and verified).**
+## Project Status
+
+`specforge` is under active development.
+
+## Roadmap
+
+- Additional language generators (TypeScript interfaces, Rust structs, Python dataclasses)
+- Plugin system for custom validators
+- Web dashboard for viewing/editing config schemas
+- Improved hot-reload diagnostics
 
 ---
 
@@ -30,7 +39,14 @@ In traditional Go application architectures, configuration management often fall
 ## Installation
 
 ### 1. Pre-built Binaries
-Download the compiled release binary for your OS and architecture from the GitHub Releases page.
+Download the compiled release binary for your OS and architecture from the [GitHub Releases page](https://github.com/SSOHEB/SpecForge/releases).
+
+Example for Linux (amd64) using `v0.1.0`:
+```bash
+curl -LO https://github.com/SSOHEB/SpecForge/releases/download/v0.1.0/SPECFORGE_0.1.0_linux_amd64.tar.gz
+tar -xzf SPECFORGE_0.1.0_linux_amd64.tar.gz
+sudo mv specforge /usr/local/bin/
+```
 
 ### 2. From Source
 ```bash
@@ -244,6 +260,8 @@ make bench
 ## Contributing
 
 For guidelines on setting up local environments, running the testing tiers, and code conventions, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Please also review our [Code of Conduct](CODE_OF_CONDUCT.md) before participating in the community.
 
 ---
 

@@ -20,11 +20,11 @@ builds:
       - -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.version={{.Version}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.commit={{.Commit}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.date={{.Date}}
 
 archives:
-  - formats: ["tar.gz"]
+  - format: tar.gz
     name_template: "SPECFORGE_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
-        formats: ["zip"]
+        format: zip
 
 checksum:
   name_template: "checksums.txt"
