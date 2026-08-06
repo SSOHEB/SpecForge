@@ -4,21 +4,9 @@
   <img src="assets/logo.svg" alt="codrao logo" width="360">
 </p>
 
-[![CI](https://github.com/SSOHEB/codrao/actions/workflows/ci.yml/badge.svg)](https://github.com/SSOHEB/codrao/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/SSOHEB/codrao/graph/badge.svg)](https://codecov.io/gh/SSOHEB/codrao) [![Go Report Card](https://goreportcard.com/badge/github.com/SSOHEB/codrao)](https://goreportcard.com/report/github.com/SSOHEB/codrao) [![Go Reference](https://pkg.go.dev/badge/github.com/SSOHEB/codrao.svg)](https://pkg.go.dev/github.com/SSOHEB/codrao) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 `codrao` is a semantic configuration management and generation framework for Go applications.
 
-## Project Status
-
-`codrao` is under active development.
-
-## Roadmap
-
-- Additional language generators (TypeScript interfaces, Rust structs, Python dataclasses)
-- Plugin system for custom validators
-- Web dashboard for viewing/editing config schemas
-- Improved hot-reload diagnostics
-
----
 
 ## Overview
 
