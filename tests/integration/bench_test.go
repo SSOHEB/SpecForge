@@ -4,15 +4,15 @@ import (
 	"os"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/internal/generator"
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/codrao/internal/generator"
+	"github.com/SSOHEB/codrao/internal/parser"
+	"github.com/SSOHEB/codrao/internal/runtime"
+	"github.com/SSOHEB/codrao/internal/schema"
 )
 
 func BenchmarkLoadAndPrepare(b *testing.B) {
-	os.Setenv("SPECFORGE_CONFIG_PATH", "../../examples/http-server/config.yaml")
-	defer os.Unsetenv("SPECFORGE_CONFIG_PATH")
+	os.Setenv("CODRAO_CONFIG_PATH", "../../examples/http-server/config.yaml")
+	defer os.Unsetenv("CODRAO_CONFIG_PATH")
 
 	rawMeta, err := parser.ParseFile("../../examples/http-server/metadata.yaml")
 	if err != nil {

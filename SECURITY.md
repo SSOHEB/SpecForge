@@ -16,4 +16,4 @@ Instead, please report them privately using **GitHub's private vulnerability rep
 3. Provide a clear description of the vulnerability, including steps to reproduce it and its potential impact.
 
 **Response Expectations:**
-As a solo/small-scale open-source project, vulnerability reports are reviewed on a **best-effort basis with no guaranteed SLA**. We appreciate your patience and your help in keeping `SpecForge` secure.
+As a solo/small-scale open-source project, vulnerability reports are reviewed on a **best-effort basis with no guaranteed SLA**. We appreciate your patience and your help in keeping `Codrao` secure.

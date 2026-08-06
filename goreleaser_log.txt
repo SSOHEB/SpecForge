@@ -16,41 +16,41 @@
 [1;94m  •[m [1mloading go mod information[m
 [1;94m  •[m [1mbuild prerequisites[m
 [1;94m  •[m [1mbuilding binaries[m
-[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=darwin_arm64_v8.0
-[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=linux_amd64_v1
-[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=darwin_amd64_v1
-[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=linux_arm64_v8.0
-[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_linux_arm64_v8.0/specforge ./cmd/specforge
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/codrao [1;94mbinaries[m=codrao [1;94mtarget[m=darwin_arm64_v8.0
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/codrao [1;94mbinaries[m=codrao [1;94mtarget[m=linux_amd64_v1
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/codrao [1;94mbinaries[m=codrao [1;94mtarget[m=darwin_amd64_v1
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/codrao [1;94mbinaries[m=codrao [1;94mtarget[m=linux_arm64_v8.0
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/codrao/cmd/codrao/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/codrao/cmd/codrao/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/codrao/cmd/codrao/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/Codrao/Codrao/dist/codrao_linux_arm64_v8.0/codrao ./cmd/codrao
       [1;94moutput[m=
     [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
     [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
     [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
-[1;94m    •[m building                                       [1;94mpaths[m=cmd/specforge [1;94mbinaries[m=specforge [1;94mtarget[m=windows_amd64_v1
-[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_linux_amd64_v1/specforge ./cmd/specforge
+[1;94m    •[m building                                       [1;94mpaths[m=cmd/codrao [1;94mbinaries[m=codrao [1;94mtarget[m=windows_amd64_v1
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/codrao/cmd/codrao/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/codrao/cmd/codrao/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/codrao/cmd/codrao/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/Codrao/Codrao/dist/codrao_linux_amd64_v1/codrao ./cmd/codrao
       [1;94moutput[m=
     [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
     [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
     [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
-[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_darwin_amd64_v1/specforge ./cmd/specforge
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/codrao/cmd/codrao/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/codrao/cmd/codrao/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/codrao/cmd/codrao/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/Codrao/Codrao/dist/codrao_darwin_amd64_v1/codrao ./cmd/codrao
       [1;94moutput[m=
     [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
     [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
     [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
-[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_darwin_arm64_v8.0/specforge ./cmd/specforge
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/codrao/cmd/codrao/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/codrao/cmd/codrao/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/codrao/cmd/codrao/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/Codrao/Codrao/dist/codrao_darwin_arm64_v8.0/codrao ./cmd/codrao
       [1;94moutput[m=
     [1;94m  │ [mgo: downloading gopkg.in/yaml.v3 v3.0.1
     [1;94m  │ [mgo: downloading github.com/spf13/pflag v1.0.9
     [1;94m  │ [mgo: downloading golang.org/x/sys v0.13.0
-[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/configforge/cmd/specforge/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/configforge/cmd/specforge/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/configforge/cmd/specforge/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/SpecForge/SpecForge/dist/specforge_windows_amd64_v1/specforge.exe ./cmd/specforge
+[1;94m    •[m go build -ldflags=-X github.com/SSOHEB/codrao/cmd/codrao/cmd.version=0.0.0-SNAPSHOT-a8534b8 -X github.com/SSOHEB/codrao/cmd/codrao/cmd.commit=a8534b88fe4b43d96fd7bc5d4ba549035ceb600b -X github.com/SSOHEB/codrao/cmd/codrao/cmd.date=2026-08-04T19:30:15Z -o /home/runner/work/Codrao/Codrao/dist/codrao_windows_amd64_v1/codrao.exe ./cmd/codrao
       [1;94moutput[m=
     [1;94m  │ [mgo: downloading github.com/inconshreveable/mousetrap v1.1.0
 [1;94m      •[m [3;2mtook: 36s[m
 [1;94m  •[m [1marchives[m
-[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_darwin_arm64.tar.gz
-[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_darwin_amd64.tar.gz
-[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_linux_arm64.tar.gz
-[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_linux_amd64.tar.gz
-[1;94m    •[m archiving                                      [1;94mname[m=dist/SPECFORGE_0.0.0-SNAPSHOT-a8534b8_windows_amd64.zip
+[1;94m    •[m archiving                                      [1;94mname[m=dist/CODRAO_0.0.0-SNAPSHOT-a8534b8_darwin_arm64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/CODRAO_0.0.0-SNAPSHOT-a8534b8_darwin_amd64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/CODRAO_0.0.0-SNAPSHOT-a8534b8_linux_arm64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/CODRAO_0.0.0-SNAPSHOT-a8534b8_linux_amd64.tar.gz
+[1;94m    •[m archiving                                      [1;94mname[m=dist/CODRAO_0.0.0-SNAPSHOT-a8534b8_windows_amd64.zip
 [1;94m  •[m [1mcalculating checksums[m
 [1;94m  •[m [1mwriting artifacts metadata[m
 [1;94m  •[m [1mrelease succeeded after 37s[m

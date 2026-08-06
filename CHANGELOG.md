@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Public API in `pkg/config` for library consumers to load, validate, and watch configurations.
 - Hot reload config watcher with debouncing and robust directory-level monitoring.
 - Optional functional/method-style config access API to generated Go code.
-- Cobra CLI for `SpecForge` with subcommands: `defaults`, `validate`, `generate`, `schema`, `docs`, `init`, and `completion`.
+- Cobra CLI for `Codrao` with subcommands: `defaults`, `validate`, `generate`, `schema`, `docs`, `init`, and `completion`.
 - Markdown documentation generator for generating human-readable configuration docs.
 - Configuration examples demonstrating generalizability using Redis and PostgreSQL patterns.
 - Comprehensive testing pyramid including golden tests, black-box integration tests, and benchmarks.
@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MIT License.
 
 ### Changed
-- Standardized project name to `SpecForge`, updating module path, CLI binary, and environment prefixes.
+- Standardized project name to `Codrao`, updating module path, CLI binary, and environment prefixes.
 - Replaced custom build script with a standard GoReleaser pipeline.
 - Improved watcher startup sequence to register filesystem watches synchronously during initialization.
 

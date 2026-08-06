@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/codrao/internal/schema"
 	"gopkg.in/yaml.v3"
 )
 
@@ -87,7 +87,7 @@ func LoadAndPrepareFile[T any](ast *schema.AST, path string, opts RuntimeOptions
 	if !opts.DisableEnv {
 		prefix := opts.EnvPrefix
 		if prefix == "" {
-			prefix = "SPECFORGE_"
+			prefix = "CODRAO_"
 		}
 		rawWithOverrides, err = ApplyEnvOverrides(ast, rawWithDefaults, originalRaw, prefix)
 	}
@@ -137,9 +137,9 @@ func copySlice(src []any) []any {
 	return dst
 }
 
-// LoadAndPrepare loads raw config from default SPECFORGE_CONFIG_PATH, applies defaults, and unmarshals.
+// LoadAndPrepare loads raw config from default CODRAO_CONFIG_PATH, applies defaults, and unmarshals.
 func LoadAndPrepare[T any](ast *schema.AST) (*T, map[string]any, error) {
-	path := os.Getenv("SPECFORGE_CONFIG_PATH")
+	path := os.Getenv("CODRAO_CONFIG_PATH")
 	if path == "" {
 		path = "./config.yaml"
 	}

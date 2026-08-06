@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve SpecForge
+about: Create a report to help us improve Codrao
 title: ''
 labels: bug
 assignees: ''
@@ -28,7 +28,7 @@ If applicable, add snippets of your `metadata.yaml` or `config.yaml` to help exp
 **Environment (please complete the following information):**
  - OS: [e.g. Windows, macOS, Linux]
  - Go version: [e.g. 1.24]
- - SpecForge version: [e.g. v1.0.0, or commit hash]
+ - Codrao version: [e.g. v1.0.0, or commit hash]
 
 **Additional context**
 Add any other context about the problem here.

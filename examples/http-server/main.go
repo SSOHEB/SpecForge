@@ -7,14 +7,14 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/SSOHEB/SpecForge/pkg/config"
+	"github.com/SSOHEB/codrao/pkg/config"
 )
 
 func main() {
 	watch := flag.Bool("watch", false, "watch config file for changes and reload")
 	flag.Parse()
 
-	configPath := os.Getenv("SPECFORGE_CONFIG_PATH")
+	configPath := os.Getenv("CODRAO_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/http-server/config.yaml"
 		if _, err := os.Stat("config.yaml"); err == nil {

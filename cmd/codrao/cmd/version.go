@@ -12,10 +12,10 @@ var (
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version details of specforge",
-	Long:  `Version prints the version tag, git commit hash, and build date of the specforge binary.`,
+	Short: "Print the version details of codrao",
+	Long:  `Version prints the version tag, git commit hash, and build date of the codrao binary.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Printf("specforge version: %s\ncommit: %s\nbuilt at: %s\n", version, commit, date)
+		cmd.Printf("codrao version: %s\ncommit: %s\nbuilt at: %s\n", version, commit, date)
 	},
 }
 

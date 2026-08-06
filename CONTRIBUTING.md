@@ -1,6 +1,6 @@
-# Contributing to specforge
+# Contributing to codrao
 
-Thank you for your interest in contributing to `specforge`! Follow these guidelines to set up your environment, write tests, and submit changes.
+Thank you for your interest in contributing to `codrao`! Follow these guidelines to set up your environment, write tests, and submit changes.
 
 ---
 
@@ -12,8 +12,8 @@ Thank you for your interest in contributing to `specforge`! Follow these guideli
    ```
 2. **Clone and Install Dependencies:**
    ```bash
-   git clone https://github.com/SSOHEB/SpecForge.git
-   cd specforge
+   git clone https://github.com/SSOHEB/codrao.git
+   cd codrao
    go mod download
    ```
 

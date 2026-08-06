@@ -29,9 +29,9 @@ func newUserError(format string, args ...any) error {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "specforge",
-	Short: "specforge is a semantic configuration management framework",
-	Long: `specforge is a command-line tool that parses configuration metadata specifications,
+	Use:   "codrao",
+	Short: "codrao is a semantic configuration management framework",
+	Long: `codrao is a command-line tool that parses configuration metadata specifications,
 generates typed Go structures and JSON schemas, applies defaults and environment variable overrides,
 and validates configuration files semantic rules at build time and runtime.`,
 }

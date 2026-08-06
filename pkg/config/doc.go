@@ -1,4 +1,4 @@
-// Package config provides a stable, public-facing API for SpecForge's configuration management layer.
+// Package config provides a stable, public-facing API for Codrao's configuration management layer.
 //
 // It wraps the internal parsing, schema compilation, validation, and runtime execution
 // (defaults + environment variable overrides) into a single declarative interface.
@@ -11,7 +11,7 @@
 //		"fmt"
 //		"log"
 //
-//		"github.com/SSOHEB/SpecForge/pkg/config"
+//		"github.com/SSOHEB/codrao/pkg/config"
 //	)
 //
 //	func main() {

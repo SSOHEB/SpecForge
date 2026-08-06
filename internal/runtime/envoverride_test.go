@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/validator"
+	"github.com/SSOHEB/codrao/internal/parser"
+	"github.com/SSOHEB/codrao/internal/schema"
+	"github.com/SSOHEB/codrao/internal/validator"
 )
 
 type testEnvConfig struct {
@@ -57,14 +57,14 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	// Ensure clean environment before tests
 	cleanup := func() {
-		os.Unsetenv("SPECFORGE_BOOLEAN_FIELD")
-		os.Unsetenv("SPECFORGE_INTEGER_FIELD")
-		os.Unsetenv("SPECFORGE_FLOAT_FIELD")
-		os.Unsetenv("SPECFORGE_STRING_FIELD")
-		os.Unsetenv("SPECFORGE_STRING_SLICE")
-		os.Unsetenv("SPECFORGE_INT_SLICE")
-		os.Unsetenv("SPECFORGE_STRING_MAP")
-		os.Unsetenv("SPECFORGE_NESTED_VALUE")
+		os.Unsetenv("CODRAO_BOOLEAN_FIELD")
+		os.Unsetenv("CODRAO_INTEGER_FIELD")
+		os.Unsetenv("CODRAO_FLOAT_FIELD")
+		os.Unsetenv("CODRAO_STRING_FIELD")
+		os.Unsetenv("CODRAO_STRING_SLICE")
+		os.Unsetenv("CODRAO_INT_SLICE")
+		os.Unsetenv("CODRAO_STRING_MAP")
+		os.Unsetenv("CODRAO_NESTED_VALUE")
 	}
 	t.Cleanup(cleanup)
 
@@ -73,7 +73,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 		raw := map[string]any{
 			"string_field": "yaml",
 		}
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -84,8 +84,8 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("env overrides YAML value", func(t *testing.T) {
 		cleanup()
-		os.Setenv("SPECFORGE_STRING_FIELD", "env")
-		os.Setenv("SPECFORGE_NESTED_VALUE", "42")
+		os.Setenv("CODRAO_STRING_FIELD", "env")
+		os.Setenv("CODRAO_NESTED_VALUE", "42")
 
 		raw := map[string]any{
 			"string_field": "yaml",
@@ -94,7 +94,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 			},
 		}
 
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -111,10 +111,10 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("env supplies value for absent field", func(t *testing.T) {
 		cleanup()
-		os.Setenv("SPECFORGE_INTEGER_FIELD", "100")
+		os.Setenv("CODRAO_INTEGER_FIELD", "100")
 
 		raw := make(map[string]any)
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -126,12 +126,12 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("slice and map parsing", func(t *testing.T) {
 		cleanup()
-		os.Setenv("SPECFORGE_STRING_SLICE", "x , y, z")
-		os.Setenv("SPECFORGE_INT_SLICE", "1,2,3")
-		os.Setenv("SPECFORGE_STRING_MAP", "a=1, b=2")
+		os.Setenv("CODRAO_STRING_SLICE", "x , y, z")
+		os.Setenv("CODRAO_INT_SLICE", "1,2,3")
+		os.Setenv("CODRAO_STRING_MAP", "a=1, b=2")
 
 		raw := make(map[string]any)
-		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
+		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -149,10 +149,10 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("malformed values return typed error", func(t *testing.T) {
 		cleanup()
-		os.Setenv("SPECFORGE_BOOLEAN_FIELD", "invalid_bool")
+		os.Setenv("CODRAO_BOOLEAN_FIELD", "invalid_bool")
 
 		raw := make(map[string]any)
-		_, err := ApplyEnvOverrides(ast, raw, raw, "SPECFORGE_")
+		_, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
 		if err == nil {
 			t.Fatalf("expected error, got nil")
 		}
@@ -161,7 +161,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 		if !errors.As(err, &parseErr) {
 			t.Errorf("expected EnvParseError, got %T: %v", err, err)
 		}
-		if parseErr.EnvVar != "SPECFORGE_BOOLEAN_FIELD" || parseErr.ExpectedType != "bool" {
+		if parseErr.EnvVar != "CODRAO_BOOLEAN_FIELD" || parseErr.ExpectedType != "bool" {
 			t.Errorf("mismatched error details: %+v", parseErr)
 		}
 	})
@@ -169,12 +169,12 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 func TestE2ESmoke(t *testing.T) {
 	t.Cleanup(func() {
-		os.Unsetenv("SPECFORGE_CONFIG_PATH")
-		os.Unsetenv("SPECFORGE_INSTRUMENTATION_HTTP_PORT")
+		os.Unsetenv("CODRAO_CONFIG_PATH")
+		os.Unsetenv("CODRAO_INSTRUMENTATION_HTTP_PORT")
 	})
 
-	os.Setenv("SPECFORGE_CONFIG_PATH", "../../examples/http-server/config_minimal.yaml")
-	os.Setenv("SPECFORGE_INSTRUMENTATION_HTTP_PORT", "9090")
+	os.Setenv("CODRAO_CONFIG_PATH", "../../examples/http-server/config_minimal.yaml")
+	os.Setenv("CODRAO_INSTRUMENTATION_HTTP_PORT", "9090")
 
 	rawMeta, err := parser.ParseFile("../../examples/http-server/metadata.yaml")
 	if err != nil {

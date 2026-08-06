@@ -1,11 +1,11 @@
-# specforge
+# codrao
 
-[![CI](https://github.com/SSOHEB/SpecForge/actions/workflows/ci.yml/badge.svg)](https://github.com/SSOHEB/SpecForge/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/SSOHEB/SpecForge/graph/badge.svg)](https://codecov.io/gh/SSOHEB/SpecForge) [![Go Report Card](https://goreportcard.com/badge/github.com/SSOHEB/SpecForge)](https://goreportcard.com/report/github.com/SSOHEB/SpecForge) [![Go Reference](https://pkg.go.dev/badge/github.com/SSOHEB/SpecForge.svg)](https://pkg.go.dev/github.com/SSOHEB/SpecForge) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-`specforge` is a semantic configuration management and generation framework for Go applications.
+[![CI](https://github.com/SSOHEB/codrao/actions/workflows/ci.yml/badge.svg)](https://github.com/SSOHEB/codrao/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/SSOHEB/codrao/graph/badge.svg)](https://codecov.io/gh/SSOHEB/codrao) [![Go Report Card](https://goreportcard.com/badge/github.com/SSOHEB/codrao)](https://goreportcard.com/report/github.com/SSOHEB/codrao) [![Go Reference](https://pkg.go.dev/badge/github.com/SSOHEB/codrao.svg)](https://pkg.go.dev/github.com/SSOHEB/codrao) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+`codrao` is a semantic configuration management and generation framework for Go applications.
 
 ## Project Status
 
-`specforge` is under active development.
+`codrao` is under active development.
 
 ## Roadmap
 
@@ -18,17 +18,17 @@
 
 ## Overview
 
-`specforge` separates configuration **specification** from configuration **data**. By defining your configuration schema, validation rules, default values, and description comments in a single YAML file (`metadata.yaml`), `specforge` compiles this specification into an AST. This AST is then used to generate type-safe Go structs, JSON schemas for IDE autocomplete, and Markdown documentation, while also providing a runtime loader with default values, environment overrides, and file-watching hot reloads.
+`codrao` separates configuration **specification** from configuration **data**. By defining your configuration schema, validation rules, default values, and description comments in a single YAML file (`metadata.yaml`), `codrao` compiles this specification into an AST. This AST is then used to generate type-safe Go structs, JSON schemas for IDE autocomplete, and Markdown documentation, while also providing a runtime loader with default values, environment overrides, and file-watching hot reloads.
 
 ---
 
-## Why specforge?
+## Why codrao?
 
 In traditional Go application architectures, configuration management often falls into two patterns:
 1. **Plain Struct Unmarshaling:** Minimal validation, boilerplate code, zero defaults handling, and silent failures when required fields are missing.
 2. **Dynamic Maps/Loose Types (Viper):** Prone to typos, lacks compile-time type-safety, and bypasses Go's type compiler.
 
-`specforge` is inspired by the **OpenTelemetry Configuration Specification** philosophy. It allows developers to:
+`codrao` is inspired by the **OpenTelemetry Configuration Specification** philosophy. It allows developers to:
 * Declare all configuration rules in a metadata file.
 * Compile and validate the metadata structure at build-time.
 * Compile strongly typed Go config structures and functional APIs.
@@ -39,24 +39,24 @@ In traditional Go application architectures, configuration management often fall
 ## Installation
 
 ### 1. Pre-built Binaries
-Download the compiled release binary for your OS and architecture from the [GitHub Releases page](https://github.com/SSOHEB/SpecForge/releases).
+Download the compiled release binary for your OS and architecture from the [GitHub Releases page](https://github.com/SSOHEB/codrao/releases).
 
 Example for Linux (amd64) using `v0.1.0`:
 ```bash
-curl -LO https://github.com/SSOHEB/SpecForge/releases/download/v0.1.0/SPECFORGE_0.1.0_linux_amd64.tar.gz
-tar -xzf SPECFORGE_0.1.0_linux_amd64.tar.gz
-sudo mv specforge /usr/local/bin/
+curl -LO https://github.com/SSOHEB/codrao/releases/download/v0.1.0/CODRAO_0.1.0_linux_amd64.tar.gz
+tar -xzf CODRAO_0.1.0_linux_amd64.tar.gz
+sudo mv codrao /usr/local/bin/
 ```
 
 ### 2. From Source
 ```bash
-go install github.com/SSOHEB/SpecForge/cmd/specforge@latest
+go install github.com/SSOHEB/codrao/cmd/codrao@latest
 ```
 
 ### 3. Via Docker
-Run `specforge` inside a container (sharing the working directory):
+Run `codrao` inside a container (sharing the working directory):
 ```bash
-docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/specforge:latest defaults -m metadata.yaml
+docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/codrao:latest defaults -m metadata.yaml
 ```
 
 ---
@@ -89,7 +89,7 @@ server:
 Compile the metadata specification into typed Go structures with a Functional Getter API:
 
 ```bash
-specforge generate --metadata metadata.yaml --out ./config --functional-api
+codrao generate --metadata metadata.yaml --out ./config --functional-api
 ```
 
 This generates `config/generated_config.go` containing:
@@ -122,9 +122,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/SSOHEB/SpecForge/internal/runtime"
-	"github.com/SSOHEB/SpecForge/internal/schema"
-	"github.com/SSOHEB/SpecForge/internal/parser"
+	"github.com/SSOHEB/codrao/internal/runtime"
+	"github.com/SSOHEB/codrao/internal/schema"
+	"github.com/SSOHEB/codrao/internal/parser"
 )
 
 func main() {
@@ -152,44 +152,44 @@ Every command supports `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-o`
 ### `defaults`
 Prints a formatted table listing all defined configuration paths, Go types, and default values or required flags:
 ```bash
-specforge defaults --metadata metadata.yaml
+codrao defaults --metadata metadata.yaml
 ```
 
 ### `validate`
 Validates application configuration files against semantic constraints (ranges, enums, regexes, required keys):
 ```bash
-specforge validate --metadata metadata.yaml --config config.yaml
+codrao validate --metadata metadata.yaml --config config.yaml
 ```
 
 ### `generate`
 Compiles both the Draft-07 JSON Schema (`schema.json`) and the typed Go structs (`generated_config.go`):
 ```bash
-specforge generate --metadata metadata.yaml --out ./generated --functional-api
+codrao generate --metadata metadata.yaml --out ./generated --functional-api
 ```
 
 ### `schema`
 Generates and prints the JSON Schema document. Use `-w` to write to file:
 ```bash
-specforge schema --metadata metadata.yaml
+codrao schema --metadata metadata.yaml
 ```
 
 ### `docs`
 Generates structured Reference Markdown documentation:
 ```bash
-specforge docs --metadata metadata.yaml --out ./docs
+codrao docs --metadata metadata.yaml --out ./docs
 ```
 
 ### `version`
 Displays version details, Git commit hash, and build timestamp:
 ```bash
-specforge version
+codrao version
 ```
 
 ---
 
 ## Architecture
 
-`specforge` operates as a compiler pipeline separating frontend parsing from backend code generation and runtime layers:
+`codrao` operates as a compiler pipeline separating frontend parsing from backend code generation and runtime layers:
 
 ```
                   +-----------------------+
@@ -225,7 +225,7 @@ specforge version
 
 ## Testing
 
-specforge features a testing pyramid containing unit tests, golden tests, black-box integration tests, and benchmarks.
+codrao features a testing pyramid containing unit tests, golden tests, black-box integration tests, and benchmarks.
 
 ### 1. Unit Tests
 Verifies internal business rules of individual packages:

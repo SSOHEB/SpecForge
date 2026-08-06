@@ -1,10 +1,10 @@
 .PHONY: build test test-golden test-integration bench release-build docker-build docker-run generate lint clean fmt
 
 build:
-	go build -o bin/specforge ./cmd/specforge
+	go build -o bin/codrao ./cmd/codrao
 
 test:
-	go test ./internal/... ./cmd/specforge/cmd -v -race -cover
+	go test ./internal/... ./cmd/codrao/cmd -v -race -cover
 
 test-golden:
 	go test ./tests/golden/... -v
@@ -19,10 +19,10 @@ release-build:
 	go run scripts/build_release.go
 
 docker-build:
-	docker build -t specforge:latest .
+	docker build -t codrao:latest .
 
 docker-run:
-	docker run --rm specforge:latest defaults -m examples/http-server/metadata.yaml
+	docker run --rm codrao:latest defaults -m examples/http-server/metadata.yaml
 
 generate:
 	go generate ./...

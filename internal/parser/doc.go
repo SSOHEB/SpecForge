@@ -5,7 +5,7 @@
 //
 // # Pipeline Role
 //
-// The parser is the first stage of the specforge pipeline:
+// The parser is the first stage of the codrao pipeline:
 //
 //	[YAML Spec] -> [parser] -> [schema (AST)] -> [generator/validator/runtime]
 //

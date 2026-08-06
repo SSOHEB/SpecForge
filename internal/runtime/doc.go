@@ -14,7 +14,7 @@
 //     for missing keys, parses and overrides values using environment variables, validates the result, and unmarshals
 //     it into the target struct.
 //   - Overrides (ApplyEnvOverrides): Translates configuration paths to environment variables (e.g.
-//     "instrumentation.http.port" becomes "SPECFORGE_INSTRUMENTATION_HTTP_PORT"), parsing them into the correct Go types.
+//     "instrumentation.http.port" becomes "CODRAO_INSTRUMENTATION_HTTP_PORT"), parsing them into the correct Go types.
 //   - Watcher: Monitors filesystem events via fsnotify. Debounces rapid-save events (e.g., 100ms), compiles the updated
 //     configuration, validates it, and atomically swaps the active configuration reference if valid.
 package runtime

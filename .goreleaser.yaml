@@ -1,9 +1,9 @@
 version: 2
-project_name: specforge
+project_name: codrao
 builds:
-  - main: ./cmd/specforge
-    id: "specforge"
-    binary: specforge
+  - main: ./cmd/codrao
+    id: "codrao"
+    binary: codrao
     env:
       - CGO_ENABLED=0
     targets:
@@ -13,11 +13,11 @@ builds:
       - darwin_arm64
       - windows_amd64
     ldflags:
-      - -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.version={{.Version}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.commit={{.Commit}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.date={{.Date}}
+      - -X github.com/SSOHEB/codrao/cmd/codrao/cmd.version={{.Version}} -X github.com/SSOHEB/codrao/cmd/codrao/cmd.commit={{.Commit}} -X github.com/SSOHEB/codrao/cmd/codrao/cmd.date={{.Date}}
 
 archives:
   - formats: ["tar.gz"]
-    name_template: "SPECFORGE_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "CODRAO_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
         formats: ["zip"]
@@ -50,4 +50,4 @@ changelog:
 #       name: homebrew-tap
 # dockers:
 #   - image_templates:
-#     - "ssoheb/specforge:{{ .Version }}"
+#     - "ssoheb/codrao:{{ .Version }}"

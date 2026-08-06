@@ -3,8 +3,8 @@ package validator
 import (
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/codrao/internal/parser"
+	"github.com/SSOHEB/codrao/internal/schema"
 
 	"gopkg.in/yaml.v3"
 )

@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	"github.com/SSOHEB/codrao/internal/parser"
+	"github.com/SSOHEB/codrao/internal/schema"
 	"github.com/spf13/cobra"
 )
 

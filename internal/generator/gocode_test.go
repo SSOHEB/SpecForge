@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	yamlparser "github.com/SSOHEB/SpecForge/internal/parser"
-	"github.com/SSOHEB/SpecForge/internal/schema"
+	yamlparser "github.com/SSOHEB/codrao/internal/parser"
+	"github.com/SSOHEB/codrao/internal/schema"
 	"go/ast"
 )
 

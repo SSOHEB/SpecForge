@@ -106,7 +106,7 @@ func TestIntegration_Init_Dir(t *testing.T) {
 	}
 
 	// 3. Run init pointing to targetDir. We can't use runCli easily if runCli relies on relative paths to the binary
-	// wait, runCli shells out to `go run ../../cmd/specforge`. If we chdir, that path breaks. 
+	// wait, runCli shells out to `go run ../../cmd/codrao`. If we chdir, that path breaks. 
 	// The in-process fallback `cmd.ExecuteWithArgs` does not rely on working directory paths.
 	// But it's better to stay in original dir, and just pass an absolute path to --dir, then check our temp cwdDir wasn't touched.
 	

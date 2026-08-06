@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/SSOHEB/SpecForge/cmd/specforge/cmd"
+	"github.com/SSOHEB/codrao/cmd/codrao/cmd"
 )
 
 func runCli(args ...string) (string, error) {
 	// 1. Try to shell out to "go run"
-	cmdArgs := append([]string{"run", "../../cmd/specforge"}, args...)
+	cmdArgs := append([]string{"run", "../../cmd/codrao"}, args...)
 	execCmd := exec.Command("go", cmdArgs...)
 	outBytes, err := execCmd.CombinedOutput()
 	if err == nil {

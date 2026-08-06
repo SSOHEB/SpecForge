@@ -12,13 +12,13 @@ var completionCmd = &cobra.Command{
 	Long: `To load completions:
 
 Bash:
-$ source <(specforge completion bash)
+$ source <(codrao completion bash)
 
 # To load completions for each session, execute once:
 # Linux:
-$ specforge completion bash > /etc/bash_completion.d/specforge
+$ codrao completion bash > /etc/bash_completion.d/codrao
 # macOS:
-$ specforge completion bash > /usr/local/etc/bash_completion.d/specforge
+$ codrao completion bash > /usr/local/etc/bash_completion.d/codrao
 
 Zsh:
 # If shell completion is not already enabled in your environment you will need
@@ -26,17 +26,17 @@ Zsh:
 $ echo "autoload -U compinit; compinit" >> ~/.zshrc
 
 # To load completions for each session, execute once:
-$ specforge completion zsh > "${fpath[1]}/_specforge"
+$ codrao completion zsh > "${fpath[1]}/_codrao"
 
 Fish:
-$ specforge completion fish | source
+$ codrao completion fish | source
 # To load completions for each session, execute once:
-$ specforge completion fish > ~/.config/fish/completions/specforge.fish
+$ codrao completion fish > ~/.config/fish/completions/codrao.fish
 
 PowerShell:
-PS> specforge completion powershell | Out-String | Invoke-Expression
+PS> codrao completion powershell | Out-String | Invoke-Expression
 # To load completions for every new session, run:
-PS> specforge completion powershell > specforge.ps1
+PS> codrao completion powershell > codrao.ps1
 # and source this file from your PowerShell profile.
 `,
 	DisableFlagsInUseLine: true,

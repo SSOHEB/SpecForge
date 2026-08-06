@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/pkg/config"
+	"github.com/SSOHEB/codrao/pkg/config"
 )
 
 type testConfig struct {
@@ -219,8 +219,8 @@ func TestWithEnvPrefix(t *testing.T) {
 func TestWithoutEnvOverrides(t *testing.T) {
 	_, _, configPath := setupTestFiles(t)
 	
-	os.Setenv("SPECFORGE_INSTRUMENTATION_HTTP_PORT", "7777")
-	defer os.Unsetenv("SPECFORGE_INSTRUMENTATION_HTTP_PORT")
+	os.Setenv("CODRAO_INSTRUMENTATION_HTTP_PORT", "7777")
+	defer os.Unsetenv("CODRAO_INSTRUMENTATION_HTTP_PORT")
 
 	cfg, err := config.Load[testConfig](configPath, config.WithoutEnvOverrides())
 	if err != nil {

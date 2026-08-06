@@ -153,7 +153,7 @@ func TestCli_Version(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected version success, got: %v", err)
 	}
-	if !strings.Contains(output, "specforge version:") {
+	if !strings.Contains(output, "codrao version:") {
 		t.Errorf("expected version output, got: %s", output)
 	}
 }

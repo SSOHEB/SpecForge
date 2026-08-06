@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/SSOHEB/SpecForge/pkg/config"
+	"github.com/SSOHEB/codrao/pkg/config"
 )
 
 func main() {
-	configPath := os.Getenv("SPECFORGE_CONFIG_PATH")
+	configPath := os.Getenv("CODRAO_CONFIG_PATH")
 	if configPath == "" {
 		configPath = "examples/redis/config.yaml"
 		if _, err := os.Stat("config.yaml"); err == nil {

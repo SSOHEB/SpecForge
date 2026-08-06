@@ -64,8 +64,8 @@ Use this to bootstrap a new configuration schema for your application.`,
 
 		cmd.Printf("Successfully generated metadata.yaml and config.yaml in %s\n\n", initDir)
 		cmd.Println("Next steps:")
-		cmd.Printf("  specforge validate -m %s -c %s\n", metaPath, configPath)
-		cmd.Printf("  specforge generate -m %s -o %s\n", metaPath, initDir)
+		cmd.Printf("  codrao validate -m %s -c %s\n", metaPath, configPath)
+		cmd.Printf("  codrao generate -m %s -o %s\n", metaPath, initDir)
 
 		return nil
 	},
