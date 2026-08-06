@@ -11,19 +11,19 @@ In traditional Go architectures, configuration management usually means manually
 You define your schema, default values, and strict validation rules (like regex patterns, min/max boundaries, and enums) in a single YAML metadata file. `codrao` then acts as a compiler—generating type-safe Go structs, functional getters, JSON schemas for IDE auto-complete, and automatically handling environment variable overrides and file-watching hot-reloads at runtime.
 
 
-## ✨ Key Features
+##  Key Features
 
-- **📝 Single Source of Truth**: Define your entire application's configuration schema in one clear `metadata.yaml` file.
-- **🛡️ Compile-Time Safety**: Generates strictly-typed Go structs with a safe Functional API. No more `map[string]interface{}` or typos!
-- **✅ Semantic Validation**: Enforce required fields, numeric boundaries, string regexes, and enums *before* your app starts.
-- **🌍 Environment Overrides**: Automatically maps environment variables to configuration paths without any extra code.
-- **🔄 Hot Reloading**: Built-in runtime file watcher that can safely reload configurations on the fly.
-- **🧠 IDE Auto-Complete**: Generates standard Draft-07 JSON Schemas so your configuration files get rich auto-complete in VSCode/IntelliJ.
-- **📚 Auto-Documentation**: Compiles beautiful Markdown documentation directly from your schema descriptions.
+- ** Single Source of Truth**: Define your entire application's configuration schema in one clear `metadata.yaml` file.
+- ** Compile-Time Safety**: Generates strictly-typed Go structs with a safe Functional API. No more `map[string]interface{}` or typos!
+- ** Semantic Validation**: Enforce required fields, numeric boundaries, string regexes, and enums *before* your app starts.
+- ** Environment Overrides**: Automatically maps environment variables to configuration paths without any extra code.
+- ** Hot Reloading**: Built-in runtime file watcher that can safely reload configurations on the fly.
+- ** IDE Auto-Complete**: Generates standard Draft-07 JSON Schemas so your configuration files get rich auto-complete in VSCode/IntelliJ.
+- ** Auto-Documentation**: Compiles beautiful Markdown documentation directly from your schema descriptions.
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 Get your application fully configured with type-safety in under 2 minutes.
 
@@ -112,7 +112,7 @@ docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/codrao:latest 
 
 ---
 
-## 🛠️ Architecture
+##  Architecture
 
 `codrao` operates as a compiler pipeline, cleanly separating frontend YAML parsing from backend code generation and runtime execution:
 
@@ -134,7 +134,7 @@ flowchart TD
 
 ---
 
-## 💻 CLI Reference
+##  CLI Reference
 
 All commands support the `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-o`) flags.
 
@@ -149,7 +149,7 @@ All commands support the `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 `codrao` maintains rigorous quality standards via a multi-tiered testing pyramid:
 
@@ -160,7 +160,7 @@ All commands support the `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions from the community! 
 
