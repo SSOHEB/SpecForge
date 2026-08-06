@@ -6,25 +6,21 @@ builds:
     binary: specforge
     env:
       - CGO_ENABLED=0
-    goos:
-      - linux
-      - darwin
-      - windows
-    goarch:
-      - amd64
-      - arm64
-    ignore:
-      - goos: windows
-        goarch: arm64
+    targets:
+      - linux_amd64
+      - linux_arm64
+      - darwin_amd64
+      - darwin_arm64
+      - windows_amd64
     ldflags:
       - -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.version={{.Version}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.commit={{.Commit}} -X github.com/SSOHEB/SpecForge/cmd/specforge/cmd.date={{.Date}}
 
 archives:
-  - format: tar.gz
+  - formats: ["tar.gz"]
     name_template: "SPECFORGE_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
-        format: zip
+        formats: ["zip"]
 
 checksum:
   name_template: "checksums.txt"
