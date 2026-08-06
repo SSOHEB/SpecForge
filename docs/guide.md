@@ -42,6 +42,35 @@ server:
 
 ---
 
+### YAML Aliases and Anchors
+
+Codrao parses `metadata.yaml` with `gopkg.in/yaml.v3`, but it does not expand aliases or merge keys into schema structure. Keep the schema explicit.
+
+What works today:
+
+- An anchor on a mapping that is used directly, for example `server: &server`, is parsed as a normal namespace. The anchor itself has no effect.
+- A scalar anchor/alias inside a leaf value, for example `default: &d 8080` followed by `default: *d`, may decode through the YAML library, but Codrao does not rely on it. Treat it as outside the supported contract.
+
+What fails:
+
+- Reusing a mapping with an alias instead of spelling it out returns `expected mapping node`.
+- YAML merge keys such as `<<: *base` return `expected mapping node`.
+- An alias in place of a namespace mapping returns `expected mapping node`.
+
+Example that is not supported:
+
+```yaml
+base: &base
+  host:
+    type: string
+server:
+  <<: *base
+```
+
+Use explicit values instead. Defaults and environment overrides already cover the common reuse cases without anchors.
+
+---
+
 ## 2. Generating Code & Schemas
 
 Use the CLI to compile your metadata file:
