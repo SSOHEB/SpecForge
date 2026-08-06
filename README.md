@@ -1,36 +1,8 @@
-<div align="center">
-  <h1>
-    <img src="assets/logo.png" alt="codrao logo" width="80" align="absmiddle">
-    codrao
-  </h1>
+# codrao
 
+A modern semantic configuration management and code-generation framework for Go.
 
-
-  <br />
-  <br />
-
-  **A modern semantic configuration management and code-generation framework for Go.**
-
-  <br />
-</div>
-
-<details open>
-  <summary><b>Table of Contents</b></summary>
-  <ul>
-    <li><a href="#-what-is-codrao">🎯 What is codrao?</a></li>
-    <li><a href="#-key-features">✨ Key Features</a></li>
-    <li><a href="#-quick-start">🚀 Quick Start</a></li>
-    <li><a href="#-installation">📦 Installation</a></li>
-    <li><a href="#-architecture">🛠️ Architecture</a></li>
-    <li><a href="#-cli-reference">💻 CLI Reference</a></li>
-    <li><a href="#-testing">🧪 Testing</a></li>
-    <li><a href="#-contributing">🤝 Contributing</a></li>
-  </ul>
-</details>
-
-<br/>
-
-## 🎯 What is codrao?
+## Overview
 
 In traditional Go architectures, configuration management usually means manually creating structs, writing endless validation boilerplate, and struggling with silent failures when environment variables are missing.
 
@@ -38,7 +10,6 @@ In traditional Go architectures, configuration management usually means manually
 
 You define your schema, default values, and strict validation rules (like regex patterns, min/max boundaries, and enums) in a single YAML metadata file. `codrao` then acts as a compiler—generating type-safe Go structs, functional getters, JSON schemas for IDE auto-complete, and automatically handling environment variable overrides and file-watching hot-reloads at runtime.
 
----
 
 ## ✨ Key Features
 
