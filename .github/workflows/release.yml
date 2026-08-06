@@ -51,9 +51,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set lower case repository name
-        id: repo
-        run: echo "NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+      - name: Set lower case owner name
+        id: owner
+        run: echo "OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_OUTPUT
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
@@ -62,5 +62,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ steps.repo.outputs.NAME }}:${{ steps.get_version.outputs.VERSION }}
-            ghcr.io/${{ steps.repo.outputs.NAME }}:latest
+            ghcr.io/${{ steps.owner.outputs.OWNER }}/codrao:${{ steps.get_version.outputs.VERSION }}
+            ghcr.io/${{ steps.owner.outputs.OWNER }}/codrao:latest
