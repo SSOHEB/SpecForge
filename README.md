@@ -1,8 +1,9 @@
 <div align="center">
   <h1>
-    <img src="assets/logo.png" alt="codrao logo" width="120" align="absmiddle">
+    <img src="assets/logo.png" alt="codrao logo" width="80" align="absmiddle">
     codrao
   </h1>
+
 
 
   <br />
