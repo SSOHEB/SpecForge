@@ -1,5 +1,9 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="codrao logo" width="360">
+  <h1>
+    <img src="assets/logo.png" alt="codrao logo" width="120" align="absmiddle">
+    codrao
+  </h1>
+
 
   <br />
   <br />
