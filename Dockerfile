@@ -10,6 +10,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
     -o /codrao ./cmd/codrao
 
 # Stage 2: Final minimal image
-FROM alpine:3.20
+FROM alpine:3.24
 COPY --from=builder /codrao /codrao
 ENTRYPOINT ["/codrao"]
