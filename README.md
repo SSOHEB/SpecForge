@@ -1,65 +1,58 @@
-# codrao
-
-<p align="center">
+<div align="center">
   <img src="assets/logo.svg" alt="codrao logo" width="360">
-</p>
 
+  <br />
+  <br />
 
-`codrao` is a semantic configuration management and generation framework for Go applications.
+  **A modern semantic configuration management and code-generation framework for Go.**
 
+  <br />
+</div>
 
-## Overview
+<details open>
+  <summary><b>Table of Contents</b></summary>
+  <ul>
+    <li><a href="#-what-is-codrao">🎯 What is codrao?</a></li>
+    <li><a href="#-key-features">✨ Key Features</a></li>
+    <li><a href="#-quick-start">🚀 Quick Start</a></li>
+    <li><a href="#-installation">📦 Installation</a></li>
+    <li><a href="#-architecture">🛠️ Architecture</a></li>
+    <li><a href="#-cli-reference">💻 CLI Reference</a></li>
+    <li><a href="#-testing">🧪 Testing</a></li>
+    <li><a href="#-contributing">🤝 Contributing</a></li>
+  </ul>
+</details>
 
-`codrao` separates configuration **specification** from configuration **data**. By defining your configuration schema, validation rules, default values, and description comments in a single YAML file (`metadata.yaml`), `codrao` compiles this specification into an AST. This AST is then used to generate type-safe Go structs, JSON schemas for IDE autocomplete, and Markdown documentation, while also providing a runtime loader with default values, environment overrides, and file-watching hot reloads.
+<br/>
 
----
+## 🎯 What is codrao?
 
-## Why codrao?
+In traditional Go architectures, configuration management usually means manually creating structs, writing endless validation boilerplate, and struggling with silent failures when environment variables are missing.
 
-In traditional Go application architectures, configuration management often falls into two patterns:
-1. **Plain Struct Unmarshaling:** Minimal validation, boilerplate code, zero defaults handling, and silent failures when required fields are missing.
-2. **Dynamic Maps/Loose Types (Viper):** Prone to typos, lacks compile-time type-safety, and bypasses Go's type compiler.
+`codrao` takes a radically different approach: it **separates configuration specification from configuration data**. 
 
-`codrao` is inspired by the **OpenTelemetry Configuration Specification** philosophy. It allows developers to:
-* Declare all configuration rules in a metadata file.
-* Compile and validate the metadata structure at build-time.
-* Compile strongly typed Go config structures and functional APIs.
-* Enforce semantic validation checks (required fields, value ranges, enums, regex patterns) at application startup and reload, cleanly decoupled from runtime serialization formats.
-
----
-
-## Installation
-
-### 1. Pre-built Binaries
-Download the compiled release binary for your OS and architecture from the [GitHub Releases page](https://github.com/SSOHEB/codrao/releases).
-
-Example for Linux (amd64) using `v0.1.0`:
-```bash
-curl -LO https://github.com/SSOHEB/codrao/releases/download/v0.1.0/CODRAO_0.1.0_linux_amd64.tar.gz
-tar -xzf CODRAO_0.1.0_linux_amd64.tar.gz
-sudo mv codrao /usr/local/bin/
-```
-
-### 2. From Source
-```bash
-go install github.com/SSOHEB/codrao/cmd/codrao@latest
-```
-
-### 3. Via Docker
-Run `codrao` inside a container (sharing the working directory):
-```bash
-docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/codrao:latest defaults -m metadata.yaml
-```
+You define your schema, default values, and strict validation rules (like regex patterns, min/max boundaries, and enums) in a single YAML metadata file. `codrao` then acts as a compiler—generating type-safe Go structs, functional getters, JSON schemas for IDE auto-complete, and automatically handling environment variable overrides and file-watching hot-reloads at runtime.
 
 ---
 
-## Quick Start
+## ✨ Key Features
 
-Get up and running in under 2 minutes:
+- **📝 Single Source of Truth**: Define your entire application's configuration schema in one clear `metadata.yaml` file.
+- **🛡️ Compile-Time Safety**: Generates strictly-typed Go structs with a safe Functional API. No more `map[string]interface{}` or typos!
+- **✅ Semantic Validation**: Enforce required fields, numeric boundaries, string regexes, and enums *before* your app starts.
+- **🌍 Environment Overrides**: Automatically maps environment variables to configuration paths without any extra code.
+- **🔄 Hot Reloading**: Built-in runtime file watcher that can safely reload configurations on the fly.
+- **🧠 IDE Auto-Complete**: Generates standard Draft-07 JSON Schemas so your configuration files get rich auto-complete in VSCode/IntelliJ.
+- **📚 Auto-Documentation**: Compiles beautiful Markdown documentation directly from your schema descriptions.
 
-### 1. Declare the Specification (`metadata.yaml`)
-Create a namespace `server` with nested fields and value constraints:
+---
 
+## 🚀 Quick Start
+
+Get your application fully configured with type-safety in under 2 minutes.
+
+### 1. Declare your Specification (`metadata.yaml`)
+Create a schema defining a `server` object with validation constraints:
 ```yaml
 server:
   host:
@@ -77,36 +70,22 @@ server:
     required: true
 ```
 
-### 2. Generate Structs & JSON Schema
-Compile the metadata specification into typed Go structures with a Functional Getter API:
-
+### 2. Generate Structs & Code
+Compile the metadata into typed Go structures and a Functional Getter API:
 ```bash
 codrao generate --metadata metadata.yaml --out ./config --functional-api
 ```
 
-This generates `config/generated_config.go` containing:
-```go
-type ServerConfig struct {
-    HostField string `yaml:"host"`
-    PortField int    `yaml:"port"`
-}
-
-func (s *ServerConfig) Host() string { return s.HostField }
-func (s *ServerConfig) Port() int    { return s.PortField }
-```
-
-### 3. Provide Configuration (`config.yaml`)
-Create a local configuration file containing overrides:
-
+### 3. Provide your Data (`config.yaml`)
+Create the actual configuration data file containing your environments overrides:
 ```yaml
 server:
   port: 9000
   api_key: "MYSECRETAPIKEY12"
 ```
 
-### 4. Load, Validate, and Access in Go
-Load the configuration, automatically injecting default values (like `host: "localhost"`) and checking validation constraints:
-
+### 4. Load & Validate in Go
+Load the config at startup. `codrao` will automatically inject your defaults (e.g., `host: "localhost"`) and rigorously validate constraints:
 ```go
 package main
 
@@ -120,140 +99,99 @@ import (
 )
 
 func main() {
-	// Parse metadata spec to build the AST schema
 	rawMeta, _ := parser.ParseFile("metadata.yaml")
 	ast, _ := schema.Build(rawMeta)
 
-	// Load configuration, apply defaults, env overrides, and validate
 	cfg, _, err := runtime.LoadAndPrepareFile[Config](ast, "config.yaml")
 	if err != nil {
 		log.Fatalf("Invalid configuration: %v", err)
 	}
 
-	// Access configuration values using the safe Functional API
 	fmt.Printf("Starting server on %s:%d...\n", cfg.Server().Host(), cfg.Server().Port())
 }
 ```
 
 ---
 
-## CLI Reference
+## 📦 Installation
 
-Every command supports `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-o`) flags.
+### Pre-built Binaries
+Download the compiled release binary for your OS and architecture directly from the [Releases page](https://github.com/SSOHEB/codrao/releases).
 
-### `defaults`
-Prints a formatted table listing all defined configuration paths, Go types, and default values or required flags:
 ```bash
-codrao defaults --metadata metadata.yaml
+curl -LO https://github.com/SSOHEB/codrao/releases/download/v0.1.0/CODRAO_0.1.0_linux_amd64.tar.gz
+tar -xzf CODRAO_0.1.0_linux_amd64.tar.gz
+sudo mv codrao /usr/local/bin/
 ```
 
-### `validate`
-Validates application configuration files against semantic constraints (ranges, enums, regexes, required keys):
+### From Source
 ```bash
-codrao validate --metadata metadata.yaml --config config.yaml
+go install github.com/SSOHEB/codrao/cmd/codrao@latest
 ```
 
-### `generate`
-Compiles both the Draft-07 JSON Schema (`schema.json`) and the typed Go structs (`generated_config.go`):
+### Via Docker
 ```bash
-codrao generate --metadata metadata.yaml --out ./generated --functional-api
-```
-
-### `schema`
-Generates and prints the JSON Schema document. Use `-w` to write to file:
-```bash
-codrao schema --metadata metadata.yaml
-```
-
-### `docs`
-Generates structured Reference Markdown documentation:
-```bash
-codrao docs --metadata metadata.yaml --out ./docs
-```
-
-### `version`
-Displays version details, Git commit hash, and build timestamp:
-```bash
-codrao version
+docker run --rm -v ${PWD}:/workspace -w /workspace ghcr.io/ssoheb/codrao:latest defaults -m metadata.yaml
 ```
 
 ---
 
-## Architecture
+## 🛠️ Architecture
 
-`codrao` operates as a compiler pipeline separating frontend parsing from backend code generation and runtime layers:
+`codrao` operates as a compiler pipeline, cleanly separating frontend YAML parsing from backend code generation and runtime execution:
 
-```
-                  +-----------------------+
-                  |  spec/metadata.yaml   |
-                  +-----------------------+
-                              |
-                              v
-                  +-----------------------+
-                  |    internal/parser    | (YAML parsing)
-                  +-----------------------+
-                              |
-                              v
-                  +-----------------------+
-                  |    internal/schema    | (AST Compilation & Checks)
-                  +-----------------------+
-                              |
-         +--------------------+--------------------+
-         |                                         |
-         v                                         v
-+------------------+                      +------------------+
-|internal/generator| (Go/JSON/Markdown)   |internal/validator| (Semantic checks)
-+------------------+                      +------------------+
-         |                                         |
-         +--------------------+--------------------+
-                              |
-                              v
-                  +-----------------------+
-                  |   internal/runtime    | (YAML Loader, Watcher, Envs)
-                  +-----------------------+
+```mermaid
+flowchart TD
+    A[📄 spec/metadata.yaml] --> B(internal/parser)
+    B -->|Raw Tokens| C(internal/schema)
+    C -->|AST & Semantic Checks| D{Compiler Backends}
+    D -->|Go Code| E[internal/generator]
+    D -->|JSON Schema| E
+    D -->|Markdown Docs| E
+    C -->|Validation Rules| F(internal/validator)
+    F -->|Validation Context| G(internal/runtime)
+    G -->|Watcher, Envs, Loader| H[🚀 Running Go App]
+    
+    style A fill:#2e3440,stroke:#88c0d0,stroke-width:2px,color:#fff
+    style H fill:#2e3440,stroke:#a3be8c,stroke-width:2px,color:#fff
 ```
 
 ---
 
-## Testing
+## 💻 CLI Reference
 
-codrao features a testing pyramid containing unit tests, golden tests, black-box integration tests, and benchmarks.
+All commands support the `--metadata` (`-m`), `--config` (`-c`), and `--out` (`-o`) flags.
 
-### 1. Unit Tests
-Verifies internal business rules of individual packages:
-```bash
-make test
-```
-
-### 2. Golden Tests
-Prevents generator output drift against pre-recorded expected outputs:
-```bash
-make test-golden
-```
-To intentionally regenerate golden files:
-```bash
-go test ./tests/golden/... -update
-```
-
-### 3. Integration Tests
-Verifies CLI command executions and error statuses as a black box:
-```bash
-make test-integration
-```
-
-### 4. Benchmarks
-Measures execution performance and memory footprint:
-```bash
-make bench
-```
+| Command | Description | Example |
+|---|---|---|
+| `defaults` | Prints a formatted table of all config paths and defaults | `codrao defaults -m metadata.yaml` |
+| `validate` | Validates a config file against semantic constraints | `codrao validate -m metadata.yaml -c config.yaml` |
+| `generate` | Compiles JSON Schemas and typed Go structs | `codrao generate -m metadata.yaml -o ./generated` |
+| `schema` | Prints the JSON Schema document (`-w` to write to file) | `codrao schema -m metadata.yaml` |
+| `docs` | Generates structured Markdown documentation | `codrao docs -m metadata.yaml -o ./docs` |
+| `version` | Displays version, commit hash, and build timestamp | `codrao version` |
 
 ---
 
-## Contributing
+## 🧪 Testing
 
-For guidelines on setting up local environments, running the testing tiers, and code conventions, see [CONTRIBUTING.md](CONTRIBUTING.md).
+`codrao` maintains rigorous quality standards via a multi-tiered testing pyramid:
 
-Please also review our [Code of Conduct](CODE_OF_CONDUCT.md) before participating in the community.
+- **Unit Tests:** `make test` - Verifies internal package business rules.
+- **Golden Tests:** `make test-golden` - Prevents output drift against pre-recorded expectations.
+- **Integration Tests:** `make test-integration` - Verifies black-box CLI command executions.
+- **Benchmarks:** `make bench` - Measures execution performance and memory footprints.
 
 ---
 
+## 🤝 Contributing
+
+We welcome contributions from the community! 
+
+Please refer to our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on setting up your local environment, running the testing tiers, and code conventions. Be sure to review our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
+
+---
+
+<div align="center">
+  Released under the <a href="LICENSE">MIT License</a>.
+</div>
