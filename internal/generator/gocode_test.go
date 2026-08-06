@@ -7,9 +7,10 @@ import (
 	"strings"
 	"testing"
 
+	"go/ast"
+
 	yamlparser "github.com/SSOHEB/codrao/internal/parser"
 	"github.com/SSOHEB/codrao/internal/schema"
-	"go/ast"
 )
 
 func TestGoCodeGeneration(t *testing.T) {
@@ -205,8 +206,8 @@ func TestGoCodeGeneration_FunctionalAPI(t *testing.T) {
 		t.Fatalf("generated functional Go code failed parsing check: %v\nCode:\n%s", err, string(codeTrue))
 	}
 
-	var foundConfigStruct, foundHttpStruct bool
-	var foundConfigInstrumentationMethod, foundHttpPortMethod bool
+	var foundConfigStruct, foundHTTPStruct bool
+	var foundConfigInstrumentationMethod, foundHTTPPortMethod bool
 
 	for _, decl := range parsedFile.Decls {
 		switch d := decl.(type) {
@@ -237,7 +238,7 @@ func TestGoCodeGeneration_FunctionalAPI(t *testing.T) {
 				}
 
 				if typeSpec.Name.Name == "Http" {
-					foundHttpStruct = true
+					foundHTTPStruct = true
 					var foundField bool
 					for _, field := range structType.Fields.List {
 						for _, name := range field.Names {
@@ -278,7 +279,7 @@ func TestGoCodeGeneration_FunctionalAPI(t *testing.T) {
 				}
 
 				if recvName == "Http" && d.Name.Name == "Port" {
-					foundHttpPortMethod = true
+					foundHTTPPortMethod = true
 					if ident, ok := d.Type.Results.List[0].Type.(*ast.Ident); ok {
 						if ident.Name != "int" {
 							t.Errorf("expected Http.Port to return int, got %s", ident.Name)
@@ -294,13 +295,13 @@ func TestGoCodeGeneration_FunctionalAPI(t *testing.T) {
 	if !foundConfigStruct {
 		t.Errorf("missing Config struct definition")
 	}
-	if !foundHttpStruct {
-		t.Errorf("missing Http struct definition")
+	if !foundHTTPStruct {
+		t.Errorf("did not find struct HTTP")
 	}
 	if !foundConfigInstrumentationMethod {
 		t.Errorf("missing Config.Instrumentation() method definition")
 	}
-	if !foundHttpPortMethod {
-		t.Errorf("missing Http.Port() method definition")
+	if !foundHTTPPortMethod {
+		t.Errorf("did not find method Port() int on HTTP")
 	}
 }

@@ -12,7 +12,7 @@ import (
 
 type testConfig struct {
 	Instrumentation struct {
-		Http struct {
+		HTTP struct {
 			Port int `yaml:"port"`
 		} `yaml:"http"`
 	} `yaml:"instrumentation"`
@@ -54,8 +54,8 @@ func TestLoad_Success(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if cfg.Instrumentation.Http.Port != 8080 {
-		t.Errorf("expected port 8080, got %d", cfg.Instrumentation.Http.Port)
+	if cfg.Instrumentation.HTTP.Port != 8080 {
+		t.Errorf("expected Port 8080 from config.yaml, got %d", cfg.Instrumentation.HTTP.Port)
 	}
 }
 
@@ -134,8 +134,8 @@ instrumentation:
 
 	select {
 	case cfg := <-ch:
-		if cfg.Instrumentation.Http.Port != 9090 {
-			t.Errorf("expected port 9090, got %d", cfg.Instrumentation.Http.Port)
+		if cfg.Instrumentation.HTTP.Port != 9090 {
+			t.Errorf("expected port 9090, got %d", cfg.Instrumentation.HTTP.Port)
 		}
 	case err := <-errCh:
 		t.Fatalf("unexpected watch error: %v", err)
@@ -148,15 +148,15 @@ func TestWatch_StopStopsWatching(t *testing.T) {
 	_, _, configPath := setupTestFiles(t)
 
 	ch := make(chan *testConfig, 1)
-	stop, err := config.Watch[testConfig](configPath, func(cfg *testConfig, err error) {
+	stop, err := config.Watch[testConfig](configPath, func(cfg *testConfig, _ error) {
 		ch <- cfg
 	})
 	if err != nil {
 		t.Fatalf("failed to start watch: %v", err)
 	}
-	
+
 	stop()
-	
+
 	// Wait a moment for watcher to actually stop
 	time.Sleep(100 * time.Millisecond)
 
@@ -202,39 +202,39 @@ func TestValidate_Failure(t *testing.T) {
 
 func TestWithEnvPrefix(t *testing.T) {
 	_, _, configPath := setupTestFiles(t)
-	
-	os.Setenv("TESTPREFIX_INSTRUMENTATION_HTTP_PORT", "7777")
-	defer os.Unsetenv("TESTPREFIX_INSTRUMENTATION_HTTP_PORT")
+
+	_ = os.Setenv("TESTPREFIX_INSTRUMENTATION_HTTP_PORT", "7777")
+	defer func() { _ = os.Unsetenv("TESTPREFIX_INSTRUMENTATION_HTTP_PORT") }()
 
 	cfg, err := config.Load[testConfig](configPath, config.WithEnvPrefix("TESTPREFIX_"))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if cfg.Instrumentation.Http.Port != 7777 {
-		t.Errorf("expected env override port 7777, got %d", cfg.Instrumentation.Http.Port)
+	if cfg.Instrumentation.HTTP.Port != 7777 {
+		t.Errorf("expected port 7777 from env var, got %d", cfg.Instrumentation.HTTP.Port)
 	}
 }
 
 func TestWithoutEnvOverrides(t *testing.T) {
 	_, _, configPath := setupTestFiles(t)
-	
-	os.Setenv("CODRAO_INSTRUMENTATION_HTTP_PORT", "7777")
-	defer os.Unsetenv("CODRAO_INSTRUMENTATION_HTTP_PORT")
+
+	_ = os.Setenv("CODRAO_INSTRUMENTATION_HTTP_PORT", "7777")
+	defer func() { _ = os.Unsetenv("CODRAO_INSTRUMENTATION_HTTP_PORT") }()
 
 	cfg, err := config.Load[testConfig](configPath, config.WithoutEnvOverrides())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if cfg.Instrumentation.Http.Port != 8080 {
-		t.Errorf("expected original port 8080 because env overrides disabled, got %d", cfg.Instrumentation.Http.Port)
+	if cfg.Instrumentation.HTTP.Port != 8080 {
+		t.Errorf("expected port 8080 from file (env override disabled), got %d", cfg.Instrumentation.HTTP.Port)
 	}
 }
 
 func TestWithMetadataPath(t *testing.T) {
 	_, metaPath, _ := setupTestFiles(t)
-	
+
 	// Config file is in another dir
 	dir2 := t.TempDir()
 	configPath := filepath.Join(dir2, "config.yaml")

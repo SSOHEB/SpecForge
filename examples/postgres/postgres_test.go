@@ -15,7 +15,7 @@ func TestPostgresConfigLoadAndValidate(t *testing.T) {
 	if _, err := os.Stat(configPath); err != nil {
 		t.Skipf("Skipping test: %s not found. Run from examples/postgres directory.", configPath)
 	}
-	
+
 	metadataFile := "metadata.yaml"
 	if _, err := os.Stat(metadataFile); err != nil {
 		t.Skipf("Skipping test: %s not found.", metadataFile)

@@ -38,11 +38,11 @@ func TestWatcher_Success(t *testing.T) {
 		t.Fatalf("failed to write initial config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, Options{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
-	defer w.Stop()
+	defer func() { _ = w.Stop() }()
 
 	if w.Current().Port != 1000 {
 		t.Errorf("expected initial Port 1000, got %d", w.Current().Port)
@@ -94,7 +94,7 @@ func TestWatcher_FailFast(t *testing.T) {
 		t.Fatalf("failed to write invalid config: %v", err)
 	}
 
-	_, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
+	_, err := NewWatcher[testWatcherConfig](ast, configPath, Options{})
 	if err == nil {
 		t.Fatalf("expected NewWatcher to fail fast on invalid YAML, but it succeeded")
 	}
@@ -109,11 +109,11 @@ func TestWatcher_InvalidReload(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, Options{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
-	defer w.Stop()
+	defer func() { _ = w.Stop() }()
 
 	errChan := make(chan error, 1)
 	w.OnError(func(err error) {
@@ -157,11 +157,11 @@ func TestWatcher_Debounce(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, Options{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
-	defer w.Stop()
+	defer func() { _ = w.Stop() }()
 
 	var reloadCount int32
 	reloadChan := make(chan int, 1)
@@ -204,13 +204,13 @@ func TestWatcher_Stop(t *testing.T) {
 		t.Fatalf("failed to write config: %v", err)
 	}
 
-	w, err := NewWatcher[testWatcherConfig](ast, configPath, RuntimeOptions{})
+	w, err := NewWatcher[testWatcherConfig](ast, configPath, Options{})
 	if err != nil {
 		t.Fatalf("failed to create watcher: %v", err)
 	}
 
 	var reloadCount int32
-	w.OnReload(func(cfg *testWatcherConfig) {
+	w.OnReload(func(_ *testWatcherConfig) {
 		atomic.AddInt32(&reloadCount, 1)
 	})
 

@@ -21,7 +21,7 @@ var generateCmd = &cobra.Command{
 	Long: `Generate parses the metadata specification, builds the AST,
 and writes both draft-07 JSON Schema (schema.json) and typed Go configuration code
 (generated_config.go) to the specified output directory.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(_ *cobra.Command, _ []string) error {
 		if _, err := os.Stat(metadataPath); os.IsNotExist(err) {
 			return newUserError("metadata spec file not found at %s — use --metadata to specify a valid path", metadataPath)
 		}

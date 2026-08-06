@@ -11,8 +11,8 @@ import (
 )
 
 func BenchmarkLoadAndPrepare(b *testing.B) {
-	os.Setenv("CODRAO_CONFIG_PATH", "../../examples/http-server/config.yaml")
-	defer os.Unsetenv("CODRAO_CONFIG_PATH")
+	_ = os.Setenv("CODRAO_CONFIG_PATH", "../../examples/http-server/config.yaml")
+	defer func() { _ = os.Unsetenv("CODRAO_CONFIG_PATH") }()
 
 	rawMeta, err := parser.ParseFile("../../examples/http-server/metadata.yaml")
 	if err != nil {
@@ -26,13 +26,13 @@ func BenchmarkLoadAndPrepare(b *testing.B) {
 
 	type httpConfig struct {
 		Instrumentation struct {
-			Http struct {
+			HTTP struct {
 				Port           int      `yaml:"port"`
 				Enabled        bool     `yaml:"enabled"`
 				Host           string   `yaml:"host"`
 				Timeout        int      `yaml:"timeout"`
 				LogLevel       string   `yaml:"log_level"`
-				ApiKey         string   `yaml:"api_key"`
+				APIKey         string   `yaml:"api_key"`
 				CaptureHeaders []string `yaml:"capture_headers"`
 				RedactQuery    []string `yaml:"redact_query"`
 			} `yaml:"http"`

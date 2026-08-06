@@ -16,7 +16,7 @@ var validateCmd = &cobra.Command{
 	Long: `Validate parses the metadata specification, builds the semantic AST,
 loads the configuration file applying defaults and environment overrides,
 and runs the validator checking all rules.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		if _, err := os.Stat(metadataPath); os.IsNotExist(err) {
 			return newUserError("metadata spec file not found at %s — use --metadata to specify a valid path", metadataPath)
 		}
@@ -34,7 +34,7 @@ and runs the validator checking all rules.`,
 			return newUserError("invalid metadata spec layout: %v", err)
 		}
 
-		_, rawConfig, err := runtime.LoadAndPrepareFile[map[string]any](ast, configPath, runtime.RuntimeOptions{})
+		_, rawConfig, err := runtime.LoadAndPrepareFile[map[string]any](ast, configPath, runtime.Options{})
 		if err != nil {
 			return newUserError("failed to load configuration at %s: %v", configPath, err)
 		}

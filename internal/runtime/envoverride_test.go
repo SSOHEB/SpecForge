@@ -11,19 +11,6 @@ import (
 	"github.com/SSOHEB/codrao/internal/validator"
 )
 
-type testEnvConfig struct {
-	BooleanField bool              `yaml:"boolean_field"`
-	IntegerField int               `yaml:"integer_field"`
-	FloatField   float64           `yaml:"float_field"`
-	StringField  string            `yaml:"string_field"`
-	StringSlice  []string          `yaml:"string_slice"`
-	IntSlice     []int             `yaml:"int_slice"`
-	StringMap    map[string]string `yaml:"string_map"`
-	Nested       struct {
-		Value int `yaml:"value"`
-	} `yaml:"nested"`
-}
-
 func buildTestEnvAST() *schema.AST {
 	ast := &schema.AST{
 		Root: &schema.Node{
@@ -57,14 +44,14 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	// Ensure clean environment before tests
 	cleanup := func() {
-		os.Unsetenv("CODRAO_BOOLEAN_FIELD")
-		os.Unsetenv("CODRAO_INTEGER_FIELD")
-		os.Unsetenv("CODRAO_FLOAT_FIELD")
-		os.Unsetenv("CODRAO_STRING_FIELD")
-		os.Unsetenv("CODRAO_STRING_SLICE")
-		os.Unsetenv("CODRAO_INT_SLICE")
-		os.Unsetenv("CODRAO_STRING_MAP")
-		os.Unsetenv("CODRAO_NESTED_VALUE")
+		_ = os.Unsetenv("CODRAO_BOOLEAN_FIELD")
+		_ = os.Unsetenv("CODRAO_INTEGER_FIELD")
+		_ = os.Unsetenv("CODRAO_FLOAT_FIELD")
+		_ = os.Unsetenv("CODRAO_STRING_FIELD")
+		_ = os.Unsetenv("CODRAO_STRING_SLICE")
+		_ = os.Unsetenv("CODRAO_INT_SLICE")
+		_ = os.Unsetenv("CODRAO_STRING_MAP")
+		_ = os.Unsetenv("CODRAO_NESTED_VALUE")
 	}
 	t.Cleanup(cleanup)
 
@@ -84,8 +71,8 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("env overrides YAML value", func(t *testing.T) {
 		cleanup()
-		os.Setenv("CODRAO_STRING_FIELD", "env")
-		os.Setenv("CODRAO_NESTED_VALUE", "42")
+		_ = os.Setenv("CODRAO_STRING_FIELD", "env")
+		_ = os.Setenv("CODRAO_NESTED_VALUE", "42")
 
 		raw := map[string]any{
 			"string_field": "yaml",
@@ -111,7 +98,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("env supplies value for absent field", func(t *testing.T) {
 		cleanup()
-		os.Setenv("CODRAO_INTEGER_FIELD", "100")
+		_ = os.Setenv("CODRAO_INTEGER_FIELD", "100")
 
 		raw := make(map[string]any)
 		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
@@ -126,9 +113,9 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("slice and map parsing", func(t *testing.T) {
 		cleanup()
-		os.Setenv("CODRAO_STRING_SLICE", "x , y, z")
-		os.Setenv("CODRAO_INT_SLICE", "1,2,3")
-		os.Setenv("CODRAO_STRING_MAP", "a=1, b=2")
+		_ = os.Setenv("CODRAO_STRING_SLICE", "x , y, z")
+		_ = os.Setenv("CODRAO_INT_SLICE", "1,2,3")
+		_ = os.Setenv("CODRAO_STRING_MAP", "a=1, b=2")
 
 		raw := make(map[string]any)
 		rawWithOverrides, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
@@ -149,7 +136,7 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 	t.Run("malformed values return typed error", func(t *testing.T) {
 		cleanup()
-		os.Setenv("CODRAO_BOOLEAN_FIELD", "invalid_bool")
+		_ = os.Setenv("CODRAO_BOOLEAN_FIELD", "invalid_bool")
 
 		raw := make(map[string]any)
 		_, err := ApplyEnvOverrides(ast, raw, raw, "CODRAO_")
@@ -169,12 +156,12 @@ func TestApplyEnvOverrides(t *testing.T) {
 
 func TestE2ESmoke(t *testing.T) {
 	t.Cleanup(func() {
-		os.Unsetenv("CODRAO_CONFIG_PATH")
-		os.Unsetenv("CODRAO_INSTRUMENTATION_HTTP_PORT")
+		_ = os.Unsetenv("CODRAO_CONFIG_PATH")
+		_ = os.Unsetenv("CODRAO_INSTRUMENTATION_HTTP_PORT")
 	})
 
-	os.Setenv("CODRAO_CONFIG_PATH", "../../examples/http-server/config_minimal.yaml")
-	os.Setenv("CODRAO_INSTRUMENTATION_HTTP_PORT", "9090")
+	_ = os.Setenv("CODRAO_CONFIG_PATH", "../../examples/http-server/config_minimal.yaml")
+	_ = os.Setenv("CODRAO_INSTRUMENTATION_HTTP_PORT", "9090")
 
 	rawMeta, err := parser.ParseFile("../../examples/http-server/metadata.yaml")
 	if err != nil {
@@ -188,13 +175,13 @@ func TestE2ESmoke(t *testing.T) {
 
 	type httpConfig struct {
 		Instrumentation struct {
-			Http struct {
+			HTTP struct {
 				Port           int      `yaml:"port"`
 				Enabled        bool     `yaml:"enabled"`
 				Host           string   `yaml:"host"`
 				Timeout        int      `yaml:"timeout"`
 				LogLevel       string   `yaml:"log_level"`
-				ApiKey         string   `yaml:"api_key"`
+				APIKey         string   `yaml:"api_key"`
 				CaptureHeaders []string `yaml:"capture_headers"`
 				RedactQuery    []string `yaml:"redact_query"`
 			} `yaml:"http"`
@@ -211,22 +198,19 @@ func TestE2ESmoke(t *testing.T) {
 		t.Fatalf("validation failed unexpectedly: %v", valErrs)
 	}
 
-	if cfg.Instrumentation.Http.Port != 9090 {
-		t.Errorf("expected Port 9090, got %d", cfg.Instrumentation.Http.Port)
+	if cfg.Instrumentation.HTTP.Port != 9090 {
+		t.Errorf("expected HTTP Port 9090 from env var, got %d", cfg.Instrumentation.HTTP.Port)
 	}
-	if cfg.Instrumentation.Http.Host != "127.0.0.1" {
-		t.Errorf("expected Host 127.0.0.1, got %s", cfg.Instrumentation.Http.Host)
+	if cfg.Instrumentation.HTTP.Host != "127.0.0.1" {
+		t.Errorf("expected Host 127.0.0.1, got %s", cfg.Instrumentation.HTTP.Host)
 	}
-	if cfg.Instrumentation.Http.Enabled != true {
-		t.Errorf("expected Enabled true, got %v", cfg.Instrumentation.Http.Enabled)
+	if cfg.Instrumentation.HTTP.Enabled != true {
+		t.Errorf("expected Enabled true, got %v", cfg.Instrumentation.HTTP.Enabled)
 	}
-	if cfg.Instrumentation.Http.ApiKey != "MINIMALAPIKEY123" {
-		t.Errorf("expected ApiKey MINIMALAPIKEY123, got %s", cfg.Instrumentation.Http.ApiKey)
+	if cfg.Instrumentation.HTTP.APIKey != "MINIMALAPIKEY123" {
+		t.Errorf("expected ApiKey MINIMALAPIKEY123, got %s", cfg.Instrumentation.HTTP.APIKey)
 	}
 
 	t.Logf("E2E Validation Passed!")
-	t.Logf("HTTP Server Port: %d (overridden via env)", cfg.Instrumentation.Http.Port)
-	t.Logf("HTTP Server Host: %s (default)", cfg.Instrumentation.Http.Host)
-	t.Logf("HTTP Server Enabled: %v (default)", cfg.Instrumentation.Http.Enabled)
-	t.Logf("HTTP Server ApiKey: %s (configured)", cfg.Instrumentation.Http.ApiKey)
+	t.Logf("HTTP Server ApiKey: %s (configured)", cfg.Instrumentation.HTTP.APIKey)
 }

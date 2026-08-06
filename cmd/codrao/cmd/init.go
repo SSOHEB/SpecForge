@@ -17,7 +17,7 @@ var initCmd = &cobra.Command{
 	Short: "Initialize a new metadata and config file",
 	Long: `Init generates a starter metadata.yaml and config.yaml in the specified directory.
 Use this to bootstrap a new configuration schema for your application.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		metaPath := filepath.Join(initDir, "metadata.yaml")
 		configPath := filepath.Join(initDir, "config.yaml")
 

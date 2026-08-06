@@ -19,20 +19,24 @@ type options struct {
 	metadataPath string
 }
 
+// Option configures the behavior of the Loader and Watcher.
 type Option func(*options)
 
+// WithEnvPrefix sets a custom environment variable prefix.
 func WithEnvPrefix(prefix string) Option {
 	return func(o *options) {
 		o.envPrefix = prefix
 	}
 }
 
+// WithoutEnvOverrides disables automatic environment variable binding.
 func WithoutEnvOverrides() Option {
 	return func(o *options) {
 		o.disableEnv = true
 	}
 }
 
+// WithMetadataPath explicitly defines the path to the metadata.yaml schema.
 func WithMetadataPath(path string) Option {
 	return func(o *options) {
 		o.metadataPath = path
@@ -47,6 +51,7 @@ type ValidationError struct {
 	Rule string
 }
 
+// ValidationErrors holds all validation rule violations.
 type ValidationErrors []ValidationError
 
 func (e ValidationErrors) Error() string {
@@ -94,6 +99,7 @@ func resolveMetadataPath(configPath string, opts *options) (string, error) {
 	return metaPath, nil
 }
 
+// Load reads, parses, validates, and builds the typed configuration struct T.
 func Load[T any](configPath string, opts ...Option) (*T, error) {
 	o := &options{}
 	for _, opt := range opts {
@@ -115,7 +121,7 @@ func Load[T any](configPath string, opts ...Option) (*T, error) {
 		return nil, convertError(err)
 	}
 
-	rOpts := runtime.RuntimeOptions{
+	rOpts := runtime.Options{
 		EnvPrefix:  o.envPrefix,
 		DisableEnv: o.disableEnv,
 	}
@@ -133,6 +139,7 @@ func Load[T any](configPath string, opts ...Option) (*T, error) {
 	return cfg, nil
 }
 
+// Watch sets up a filesystem watcher to auto-reload the configuration when changed.
 func Watch[T any](configPath string, onReload func(*T, error), opts ...Option) (stop func(), err error) {
 	o := &options{}
 	for _, opt := range opts {
@@ -154,7 +161,7 @@ func Watch[T any](configPath string, onReload func(*T, error), opts ...Option) (
 		return nil, convertError(err)
 	}
 
-	rOpts := runtime.RuntimeOptions{
+	rOpts := runtime.Options{
 		EnvPrefix:  o.envPrefix,
 		DisableEnv: o.disableEnv,
 	}
@@ -179,12 +186,13 @@ func Watch[T any](configPath string, onReload func(*T, error), opts ...Option) (
 
 	stopFunc := func() {
 		cancel()
-		w.Stop()
+		_ = w.Stop()
 	}
 
 	return stopFunc, nil
 }
 
+// Validate checks the given config file against the metadata schema.
 func Validate(configPath, metadataPath string) error {
 	rawMeta, err := parser.ParseFile(metadataPath)
 	if err != nil {
@@ -196,7 +204,7 @@ func Validate(configPath, metadataPath string) error {
 		return convertError(err)
 	}
 
-	_, rawConfig, err := runtime.LoadAndPrepareFile[map[string]any](ast, configPath, runtime.RuntimeOptions{})
+	_, rawConfig, err := runtime.LoadAndPrepareFile[map[string]any](ast, configPath, runtime.Options{})
 	if err != nil {
 		return convertError(err)
 	}

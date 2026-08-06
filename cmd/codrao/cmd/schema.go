@@ -20,7 +20,7 @@ var schemaCmd = &cobra.Command{
 	Long: `Schema parses the metadata specification, builds the AST,
 and prints the draft-07 JSON Schema document directly to standard output,
 or writes it to the output directory if --write is specified.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		if _, err := os.Stat(metadataPath); os.IsNotExist(err) {
 			return newUserError("metadata spec file not found at %s — use --metadata to specify a valid path", metadataPath)
 		}

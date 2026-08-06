@@ -16,7 +16,7 @@ var defaultsCmd = &cobra.Command{
 	Long: `Defaults parses the metadata spec, builds the AST, and prints
 a discoverable, human-readable list of every field's dotted path,
 type, and default value or whether it is required.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		if _, err := os.Stat(metadataPath); os.IsNotExist(err) {
 			return newUserError("metadata spec file not found at %s — use --metadata to specify a valid path", metadataPath)
 		}

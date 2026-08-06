@@ -24,13 +24,13 @@ type Watcher[T any] struct {
 	watcher      *fsnotify.Watcher
 	stopChan     chan struct{}
 	stopOnce     sync.Once
-	opts         RuntimeOptions
+	opts         Options
 	reloadMu     sync.Mutex
 }
 
 // NewWatcher loads the initial config, validates it, and returns a new Watcher.
 // If the initial config is invalid, it fails fast.
-func NewWatcher[T any](ast *schema.AST, path string, opts RuntimeOptions) (*Watcher[T], error) {
+func NewWatcher[T any](ast *schema.AST, path string, opts Options) (*Watcher[T], error) {
 	cfg, _, err := LoadAndPrepareFile[T](ast, path, opts)
 	if err != nil {
 		return nil, fmt.Errorf("initial config load failed: %w", err)
@@ -43,7 +43,7 @@ func NewWatcher[T any](ast *schema.AST, path string, opts RuntimeOptions) (*Watc
 
 	dir := filepath.Dir(path)
 	if err := fw.Add(dir); err != nil {
-		fw.Close()
+		_ = fw.Close()
 		return nil, fmt.Errorf("failed to watch directory %s: %w", dir, err)
 	}
 

@@ -14,7 +14,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version details of codrao",
 	Long:  `Version prints the version tag, git commit hash, and build date of the codrao binary.`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(cmd *cobra.Command, _ []string) {
 		cmd.Printf("codrao version: %s\ncommit: %s\nbuilt at: %s\n", version, commit, date)
 	},
 }

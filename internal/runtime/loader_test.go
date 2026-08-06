@@ -8,7 +8,7 @@ import (
 
 type testConfig struct {
 	Instrumentation struct {
-		Http struct {
+		HTTP struct {
 			Port           int      `yaml:"port"`
 			Enabled        bool     `yaml:"enabled"`
 			LogLevel       string   `yaml:"log_level"`
@@ -26,14 +26,14 @@ func TestLoadFile_Success(t *testing.T) {
 		t.Fatalf("failed to load valid config: %v", err)
 	}
 
-	if cfg.Instrumentation.Http.Port != 8080 {
-		t.Errorf("expected port 8080, got %d", cfg.Instrumentation.Http.Port)
+	if cfg.Instrumentation.HTTP.Port != 8080 {
+		t.Errorf("expected port 8080, got %d", cfg.Instrumentation.HTTP.Port)
 	}
-	if !cfg.Instrumentation.Http.Enabled {
+	if !cfg.Instrumentation.HTTP.Enabled {
 		t.Errorf("expected enabled to be true")
 	}
-	if cfg.Instrumentation.Http.LogLevel != "info" {
-		t.Errorf("expected log level 'info', got %s", cfg.Instrumentation.Http.LogLevel)
+	if cfg.Instrumentation.HTTP.LogLevel != "info" {
+		t.Errorf("expected log level 'info', got %s", cfg.Instrumentation.HTTP.LogLevel)
 	}
 }
 
@@ -51,14 +51,14 @@ instrumentation:
 		t.Fatalf("failed to load config from reader: %v", err)
 	}
 
-	if cfg.Instrumentation.Http.Port != 9090 {
-		t.Errorf("expected port 9090, got %d", cfg.Instrumentation.Http.Port)
+	if cfg.Instrumentation.HTTP.Port != 9090 {
+		t.Errorf("expected port 9090, got %d", cfg.Instrumentation.HTTP.Port)
 	}
-	if cfg.Instrumentation.Http.Enabled {
+	if cfg.Instrumentation.HTTP.Enabled {
 		t.Errorf("expected enabled to be false")
 	}
-	if cfg.Instrumentation.Http.LogLevel != "debug" {
-		t.Errorf("expected log level 'debug', got %s", cfg.Instrumentation.Http.LogLevel)
+	if cfg.Instrumentation.HTTP.LogLevel != "debug" {
+		t.Errorf("expected log level 'debug', got %s", cfg.Instrumentation.HTTP.LogLevel)
 	}
 }
 

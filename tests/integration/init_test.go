@@ -42,12 +42,12 @@ func TestIntegration_Init_AlreadyExists(t *testing.T) {
 	dir := t.TempDir()
 	metaPath := filepath.Join(dir, "metadata.yaml")
 	configPath := filepath.Join(dir, "config.yaml")
-	
+
 	// Pre-create both files
 	metaContent := []byte("existing metadata")
 	configContent := []byte("existing config")
-	os.WriteFile(metaPath, metaContent, 0644)
-	os.WriteFile(configPath, configContent, 0644)
+	_ = os.WriteFile(metaPath, metaContent, 0644)
+	_ = os.WriteFile(configPath, configContent, 0644)
 
 	output, err := runCli("init", "--dir", dir)
 	if err == nil {
@@ -75,7 +75,7 @@ func TestIntegration_Init_Force(t *testing.T) {
 	metaPath := filepath.Join(dir, "metadata.yaml")
 
 	// Pre-create metadata
-	os.WriteFile(metaPath, []byte("existing metadata"), 0644)
+	_ = os.WriteFile(metaPath, []byte("existing metadata"), 0644)
 
 	output, err := runCli("init", "--dir", dir, "--force")
 	if err != nil {
@@ -98,7 +98,7 @@ func TestIntegration_Init_Dir(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get current dir: %v", err)
 	}
-	defer os.Chdir(originalDir)
+	defer func() { _ = os.Chdir(originalDir) }()
 
 	err = os.Chdir(cwdDir)
 	if err != nil {
@@ -106,10 +106,10 @@ func TestIntegration_Init_Dir(t *testing.T) {
 	}
 
 	// 3. Run init pointing to targetDir. We can't use runCli easily if runCli relies on relative paths to the binary
-	// wait, runCli shells out to `go run ../../cmd/codrao`. If we chdir, that path breaks. 
+	// wait, runCli shells out to `go run ../../cmd/codrao`. If we chdir, that path breaks.
 	// The in-process fallback `cmd.ExecuteWithArgs` does not rely on working directory paths.
 	// But it's better to stay in original dir, and just pass an absolute path to --dir, then check our temp cwdDir wasn't touched.
-	
+
 	err = os.Chdir(originalDir)
 	if err != nil {
 		t.Fatalf("failed to chdir back: %v", err)
@@ -133,11 +133,10 @@ func TestIntegration_Init_Dir(t *testing.T) {
 	// Ensure they do NOT exist in cwd (which is tests/integration)
 	if _, err := os.Stat("metadata.yaml"); err == nil {
 		t.Errorf("metadata.yaml incorrectly created in cwd")
-		os.Remove("metadata.yaml")
+		_ = os.Remove("metadata.yaml")
 	}
 	if _, err := os.Stat("config.yaml"); err == nil {
 		t.Errorf("config.yaml incorrectly created in cwd")
-		os.Remove("config.yaml")
+		_ = os.Remove("config.yaml")
 	}
 }
-

@@ -32,7 +32,7 @@ func LoadFile[T any](path string) (*T, error) {
 		}
 		return nil, err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 	return LoadReader[T](f)
 }
 

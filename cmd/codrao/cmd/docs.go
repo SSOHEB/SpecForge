@@ -20,7 +20,7 @@ var docsCmd = &cobra.Command{
 	Long: `Docs parses the metadata specification, builds the AST,
 and writes the reference Markdown documentation to --out/CONFIGURATION.md,
 or prints it directly to stdout if --stdout is specified.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		if _, err := os.Stat(metadataPath); os.IsNotExist(err) {
 			return newUserError("metadata spec file not found at %s — use --metadata to specify a valid path", metadataPath)
 		}
