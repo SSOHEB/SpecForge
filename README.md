@@ -8,13 +8,13 @@ In traditional Go architectures, configuration management usually means manually
 
 `codrao` takes a radically different approach: it **separates configuration specification from configuration data**. 
 
-You define your schema, default values, and strict validation rules (like regex patterns, min/max boundaries, and enums) in a single YAML metadata file. `codrao` then acts as a compiler—generating type-safe Go structs, functional getters, JSON schemas for IDE auto-complete, and automatically handling environment variable overrides and file-watching hot-reloads at runtime.
+You define your schema, default values, and strict validation rules (like regex patterns, min/max boundaries, and enums) in a single YAML metadata file. `codrao` then acts as a compiler generating type safe Go structs, functional getters, JSON schemas for IDE auto-complete, and automatically handling environment variable overrides and file-watching hot-reloads at runtime.
 
 
 ##  Key Features
 
 - ** Single Source of Truth**: Define your entire application's configuration schema in one clear `metadata.yaml` file.
-- ** Compile-Time Safety**: Generates strictly-typed Go structs with a safe Functional API. No more `map[string]interface{}` or typos!
+- ** Compile-Time Safety**: Generates strictly typed Go structs with a safe Functional API. No more `map[string]interface{}` or typos!
 - ** Semantic Validation**: Enforce required fields, numeric boundaries, string regexes, and enums *before* your app starts.
 - ** Environment Overrides**: Automatically maps environment variables to configuration paths without any extra code.
 - ** Hot Reloading**: Built-in runtime file watcher that can safely reload configurations on the fly.
